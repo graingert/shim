@@ -19,6 +19,7 @@ class user_input():
 
     def set_GUI_reference(self, canvas):
         self.graphics = canvas
+        self.instances[self.curr_instance].set_line_height(self.graphics.line_height)
 
     def key(self, event):
         self.user_key_pressed(event.keysym)

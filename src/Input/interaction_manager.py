@@ -11,18 +11,18 @@ def render_page(gui_reference, instance):
     buff_line_count = gui_reference.get_line_height()
 
     gui_reference.draw_cursor(x, y)
+    # top is zero indexed and line numbers are one indexed
     gui_reference.draw_line_numbers(curr_top)
 
-    for i in range(buff_line_count):
+    for i in range(buff_line_count + 1):
         # Might have index errors. catch them and move on with life for now
         try:
             gui_reference.write_text_grid(0, i, lines[curr_top + i], '#839496')
         except IndexError:
-            pass
+            break
 
 
 def move_left(gui_reference, instance):
-    print 'move left called'
     cursor_logic.move_cursor_left(instance)
     render_page(gui_reference, instance)
 
@@ -31,9 +31,19 @@ def move_right(gui_reference, instance):
     cursor_logic.move_cursor_right(instance)
     render_page(gui_reference, instance)
 
+def move_down(gui_reference, instance):
+    cursor_logic.move_cursor_down(instance)
+    render_page(gui_reference, instance)
+
+def move_up(gui_reference, instance):
+    cursor_logic.move_cursor_up(instance)
+    render_page(gui_reference, instance)
+
 COMMAND_MAP = {
                 'move_cursor_left': move_left,
-                'move_cursor_right': move_right
+                'move_cursor_right': move_right,
+                'move_cursor_up': move_up,
+                'move_cursor_down': move_down
               }
 
 def input_command(command, gui_reference, instance):
