@@ -59,7 +59,7 @@ def move_cursor_next_word_front(instance):
 
     # this is definitely not optimal... there must be a smarter way to do this.
     for index, char in enumerate((instance.get_line(y + curr_top)[x + 1:])):
-        if accept_all or (char in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
+        if (accept_all and char != ' ') or (char in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
             return instance.set_cursor(x + index + 1, y)
         elif char == ' ':
             accept_all = True
@@ -69,3 +69,23 @@ def move_cursor_next_word_front(instance):
         for index, char in enumerate(l):
             if char != ' ':
                 return instance.set_cursor(index, y + offset + 1)
+
+
+def move_cursor_move_prev_word_front(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+    accept_all = False
+
+    # Same as above, I'm pretty sure this can be cleaner.
+    curr_str = instance.get_line(y + curr_top)
+    for dx in range(x - 1, -1, -1):
+        if (curr_str[dx] != ' ' and curr_str[dx - 1] == ' ') or (curr_str[dx] in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
+            return instance.set_cursor(dx, y)
+        elif (curr_str[dx] != ' ') and dx == 0:
+            return instance.set_cursor(dx, y)
+
+    for dy, line_num in enumerate(range(y + curr_top - 1, -1, -1)):
+        curr_str = instance.get_line(line_num)
+        for dx in range(len(curr_str) - 1, 0, -1):
+            if (curr_str[dx] != ' ' and curr_str[dx - 1] == ' ') or (curr_str[dx] in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
+                return instance.set_cursor(dx, y - dy - 1)
