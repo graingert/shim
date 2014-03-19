@@ -8,6 +8,13 @@ def move_cursor_end_line(instance):
     curr_line = instance.get_line(y + curr_top)
     instance.set_cursor(len(curr_line) - 2, y)
 
+def move_cursor_end_file(instance):
+    x, y = instance.get_cursor()
+    curr_top = instance.get_curr_top()
+    # line num and curr top are both 1 indexed
+    instance.set_curr_top(instance.get_line_num() - instance.get_line_height() - 2)
+    instance.set_cursor(0, instance.get_line_height())
+
 def move_cursor_left(instance):
     x, y = instance.get_cursor()
     x = (0, x - 1)[x - 1 > 0]

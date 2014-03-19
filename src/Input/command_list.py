@@ -6,5 +6,6 @@ DEFAULT_MOVEMENTS = {
                         '0': 'move_cursor_beginning_line',
                         'dollar': 'move_cursor_end_line',
                         'w': 'move_cursor_next_word_front',
-                        'b': 'move_cursor_prev_word_front'
+                        'b': 'move_cursor_prev_word_front',
+                        'G': 'move_cursor_end_file'
                     }

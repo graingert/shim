@@ -2,7 +2,7 @@ from Tkinter import Tk, Canvas, BOTH
 from ttk import Frame
 import tkFont
 # this is hacky as shit but the math doesn't seem to be working out so far
-LINEMAPPING = { 12: 61, 18: 42, 20: 38 }
+LINEMAPPING = { 12: 58, 18: 39, 20: 35 }
 # Main GUI handler class handles graphics to be displayed to user
 class text_canvas(Frame):
     def __init__(self, parent, font_size, input_handler):
@@ -38,7 +38,7 @@ class text_canvas(Frame):
         self.canvas.create_text(x_val, y_val, anchor='nw', text=text, font=self.text_font, fill=color)
 
     def draw_line_numbers(self, start):
-        for i in range(self.line_height):
+        for i in range(self.line_height + 1):
             # 2 pixel spacing between each line
             self.canvas.create_text(0, self.cheight * i + (i * 2), anchor='nw', text=str(start + i), font=self.text_font, fill='#839496')
 

@@ -60,3 +60,4 @@ if __name__ == '__main__':
     create_instruction_file(options.snapshotcount, options.processcount)
     instruction = 'python app.py -n %d < instructions.txt' % (options.processcount)
     os.system(instruction)
+
