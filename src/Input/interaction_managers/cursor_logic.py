@@ -1,3 +1,13 @@
+def move_cursor_beginning_line(instance):
+    x, y = instance.get_cursor()
+    instance.set_cursor(0, y)
+
+def move_cursor_end_line(instance):
+    x, y = instance.get_cursor()
+    curr_top = instance.get_curr_top()
+    curr_line = instance.get_line(y + curr_top)
+    instance.set_cursor(len(curr_line) - 2, y)
+
 def move_cursor_left(instance):
     x, y = instance.get_cursor()
     x = (0, x - 1)[x - 1 > 0]
@@ -25,11 +35,7 @@ def move_cursor_up(instance):
     except IndexError:
          pass
 
-    if y > 0:
-        instance.set_cursor(x, y - 1)
-    elif curr_top > 0:
-        instance.set_curr_top(curr_top - 1)
-        instance.set_cursor(x, y)
+    instance.set_cursor(x, y - 1)
 
 def move_cursor_down(instance):
     curr_top = instance.get_curr_top()
@@ -41,9 +47,25 @@ def move_cursor_down(instance):
         x = min(x, len(next_line) - 2)
     except IndexError:
          pass
-
-    if y < instance.get_line_height():
+    # if curr line + 1 is < total line numbers then move cursor down
+    if (curr_top + y + 1) < instance.get_line_num() - 1:
         instance.set_cursor(x, y + 1)
-    elif curr_top + y < instance.get_line_num():
-        instance.set_curr_top(curr_top + 1)
-        instance.set_cursor(x, y)
+
+
+def move_cursor_next_word_front(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+    accept_all = False
+
+    # this is definitely not optimal... there must be a smarter way to do this.
+    for index, char in enumerate((instance.get_line(y + curr_top)[x + 1:])):
+        if accept_all or (char in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
+            return instance.set_cursor(x + index + 1, y)
+        elif char == ' ':
+            accept_all = True
+
+    for offset, line_num in enumerate(range(y + curr_top + 1, instance.get_line_num() - 1)):
+        l = instance.get_line(line_num)
+        for index, char in enumerate(l):
+            if char != ' ':
+                return instance.set_cursor(index, y + offset + 1)

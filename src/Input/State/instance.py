@@ -3,12 +3,13 @@ class instance():
         self.lines = [line for line in open(filename, 'r')]
         self.cursor_x, self.cursor_y = 0, 0
         self.curr_top = 0
-    # line numbers are 0 indexed
-    def get_lines(self):
-        return self.lines
 
     def get_line(self, index):
         return self.lines[index]
+
+    # line numbers are 0 indexed
+    def get_lines(self):
+        return self.lines
 
     def get_cursor(self):
         return self.cursor_x, self.cursor_y
@@ -27,7 +28,14 @@ class instance():
 
     def set_cursor(self, x, y):
         self.cursor_x = max(x, 0)
-        self.cursor_y = max(y, 0)
+        if y > self.line_height:
+            self.curr_top += (y - self.line_height)
+            self.cursor_y = self.line_height
+        elif y < 0:
+            self.curr_top = max(self.curr_top + y, 0)
+            self.cursor_y = 0
+        else:
+            self.cursor_y = y
 
     def set_line_height(self, num):
         self.line_height = num
