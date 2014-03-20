@@ -81,25 +81,31 @@ def move_prev_paragraph(gui_reference, instance):
     render_page(gui_reference, instance)
 
 
-def move_line_num(num_arg, gui_reference, instance):
-    cursor_logic.move_cursor_line_num(num_arg, instance)
+def move_line_num(n_arg, gui_reference, instance):
+    cursor_logic.move_cursor_line_num(n_arg, instance)
+    render_page(gui_reference, instance)
+
+
+def move_seek_char(c_arg, gui_reference, instance):
+    cursor_logic.move_cursor_seek_char(c_arg, instance)
     render_page(gui_reference, instance)
 
 
 COMMAND_MAP = {
-                'move_cursor_up': move_up,
-                'move_cursor_left': move_left,
-                'move_cursor_down': move_down,
-                'move_cursor_right': move_right,
-                'move_cursor_line_num': move_line_num,
-                'move_cursor_end_line': move_end_line,
-                'move_cursor_end_file': move_end_file,
-                'move_cursor_begin_file': move_begin_file,
-                'move_cursor_beginning_line': move_beginning_line,
-                'move_cursor_next_word_front': move_next_word_front,
-                'move_cursor_prev_word_front': move_prev_word_front,
-                'move_cursor_next_paragraph': move_next_paragraph,
-                'move_cursor_prev_paragraph': move_prev_paragraph
+                  'move_cursor_up': move_up,
+                  'move_cursor_left': move_left,
+                  'move_cursor_down': move_down,
+                  'move_cursor_right': move_right,
+                  'move_cursor_line_num': move_line_num,
+                  'move_cursor_end_line': move_end_line,
+                  'move_cursor_end_file': move_end_file,
+                  'move_cursor_seek_char': move_seek_char,
+                  'move_cursor_begin_file': move_begin_file,
+                  'move_cursor_beginning_line': move_beginning_line,
+                  'move_cursor_next_word_front': move_next_word_front,
+                  'move_cursor_prev_word_front': move_prev_word_front,
+                  'move_cursor_next_paragraph': move_next_paragraph,
+                  'move_cursor_prev_paragraph': move_prev_paragraph
               }
 
 def input_command(command, gui_reference, instance):
@@ -118,5 +124,11 @@ def input_command_num(commands, gui_reference, instance):
     if commands[0].startswith('n'):
         n_arg = commands[0][1:]
         in_arg = commands[1]
-        move_line_num(int(n_arg), gui_reference, instance)
+        COMMAND_MAP[in_arg](int(n_arg), gui_reference, instance)
     # r denotes repeat arguments i.e 3j means run the 'j' command 3 times
+    # c denotes character arguments
+    elif commands[0].startswith('c'):
+        # This should be a single character argument anyway
+        c_arg = commands[0][1:]
+        in_arg = commands[1]
+        COMMAND_MAP[in_arg](c_arg, gui_reference, instance)

@@ -32,6 +32,17 @@ def move_cursor_line_num(n, instance):
     instance.set_curr_top(min(n - 1, instance.get_line_num() - 2))
     instance.set_cursor(0, 0)
 
+
+def move_cursor_seek_char(c, instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+
+    curr_line = instance.get_line(y + curr_top)
+    for offset, char, in enumerate(curr_line[x + 1:]):
+        if char == c:
+            instance.set_cursor(x + offset + 1, y)
+            break
+
 def move_cursor_right(instance):
     x, y = instance.get_cursor()
     curr_top = instance.get_curr_top()

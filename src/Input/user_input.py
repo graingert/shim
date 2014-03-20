@@ -4,6 +4,7 @@ import re
 
 DEFAULT_MOVEMENTS = command_list.DEFAULT_MOVEMENTS
 BREAK_MOVEMENTS = command_list.BREAK_MOVEMENTS
+COMMAND_MAP = command_list.COMMAND_MAP
 
 # parses keyboard input for meaningful instructions
 # sends "completed" instructions to interaction_manager router
@@ -23,7 +24,17 @@ class user_input():
         self.instances[self.curr_instance].set_line_height(self.graphics.line_height)
 
     def key(self, event):
-        self.user_key_pressed(event.keysym)
+        # if key is not in [a-zA-Z0-9] length of keysym will be greater than one
+        key = event.keysym
+        if key != '??':
+            if len(key) > 1:
+                try:
+                    k = COMMAND_MAP[key]
+                    self.user_key_pressed(k)
+                except KeyError:
+                    pass
+            else:
+                self.user_key_pressed(key)
 
     def control_f(self, event):
         # drop on floor for now
@@ -39,7 +50,7 @@ class user_input():
 
     def user_key_default(self, key):
         # To be buffered
-        if key in ['m', 'g'] or self.is_digit(key) or len(self.command_buffer):
+        if key in ['m', 'g', 'f'] or self.is_digit(key) or len(self.command_buffer):
             self.command_buffer += key
             s_par = command_parser.parse(self.command_buffer)
 
@@ -54,8 +65,7 @@ class user_input():
         elif DEFAULT_MOVEMENTS.has_key(key):
             interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.instances[self.curr_instance])
             self.command_buffer = ''
-
-
+    # checks if key input an integer greater than 0 and less than 10
     def is_digit(self, k):
-        return (len(k) == 1) and (ord(k) >= 48 and ord(k) <= 57)
+        return (len(k) == 1) and (ord(k) >= 49 and ord(k) <= 57)
 
