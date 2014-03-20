@@ -15,10 +15,22 @@ def move_cursor_end_file(instance):
     instance.set_curr_top(instance.get_line_num() - instance.get_line_height() - 2)
     instance.set_cursor(0, instance.get_line_height())
 
+
+def move_cursor_begin_file(instance):
+    instance.set_curr_top(0)
+    x, y = instance.get_cursor()
+    instance.set_cursor(0, 0)
+
+
 def move_cursor_left(instance):
     x, y = instance.get_cursor()
     x = (0, x - 1)[x - 1 > 0]
     instance.set_cursor(x, y)
+
+
+def move_cursor_line_num(n, instance):
+    instance.set_curr_top(n - 1)
+    instance.set_cursor(0, 0)
 
 def move_cursor_right(instance):
     x, y = instance.get_cursor()
@@ -43,6 +55,7 @@ def move_cursor_up(instance):
          pass
 
     instance.set_cursor(x, y - 1)
+
 
 def move_cursor_down(instance):
     curr_top = instance.get_curr_top()
