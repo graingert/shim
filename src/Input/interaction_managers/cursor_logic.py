@@ -57,6 +57,49 @@ def move_cursor_up(instance):
     instance.set_cursor(x, y - 1)
 
 
+def move_cursor_next_paragraph(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+
+    for offset, line_num in enumerate(range(y + curr_top + 1, instance.get_line_num() - 1)):
+        l = instance.get_line(line_num)
+        # break if line is empty, does not mirror vim's behavior fully
+        if l == '\n':
+            return instance.set_cursor(0, y + offset + 1)
+
+    instance.set_curr_top(instance.get_line_num() - instance.get_line_height() - 2)
+    instance.set_cursor(0,  instance.get_line_height())
+
+
+def move_cursor_prev_paragraph(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+
+    for offset, line_num in enumerate(range(y + curr_top - 1, -1, -1)):
+        l = instance.get_line(line_num)
+        # break if line is empty, does not mirror vim's behavior fully
+        if l == '\n':
+            return instance.set_cursor(0, y - offset - 1)
+
+    instance.set_curr_top(0)
+    instance.set_cursor(0, 0)
+
+
+def move_cursor_next_paragraph(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+
+    for offset, line_num in enumerate(range(y + curr_top + 1, instance.get_line_num() - 1)):
+        l = instance.get_line(line_num)
+        # break if line is empty, does not mirror vim's behavior fully
+        if l == '\n':
+            return instance.set_cursor(0, y + offset + 1)
+
+    instance.set_curr_top(instance.get_line_num() - instance.get_line_height() - 2)
+    instance.set_cursor(0,  instance.get_line_height())
+
+
+
 def move_cursor_down(instance):
     curr_top = instance.get_curr_top()
     x, y = instance.get_cursor()

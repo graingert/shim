@@ -62,13 +62,22 @@ def move_prev_word_front(gui_reference, instance):
 
 
 def move_end_file(gui_reference, instance):
-    print 'end'
     cursor_logic.move_cursor_end_file(instance)
     render_page(gui_reference, instance)
 
 
 def move_begin_file(gui_reference, instance):
     cursor_logic.move_cursor_begin_file(instance)
+    render_page(gui_reference, instance)
+
+
+def move_next_paragraph(gui_reference, instance):
+    cursor_logic.move_cursor_next_paragraph(instance)
+    render_page(gui_reference, instance)
+
+
+def move_prev_paragraph(gui_reference, instance):
+    cursor_logic.move_cursor_prev_paragraph(instance)
     render_page(gui_reference, instance)
 
 
@@ -88,7 +97,9 @@ COMMAND_MAP = {
                 'move_cursor_begin_file': move_begin_file,
                 'move_cursor_beginning_line': move_beginning_line,
                 'move_cursor_next_word_front': move_next_word_front,
-                'move_cursor_prev_word_front': move_prev_word_front
+                'move_cursor_prev_word_front': move_prev_word_front,
+                'move_cursor_next_paragraph': move_next_paragraph,
+                'move_cursor_prev_paragraph': move_prev_paragraph
               }
 
 def input_command(command, gui_reference, instance):
