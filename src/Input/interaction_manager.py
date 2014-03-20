@@ -111,10 +111,11 @@ COMMAND_MAP = {
 def input_command(command, gui_reference, instance):
     commands = command.split(':')
     if len(commands) == 1:
-        try:
-            COMMAND_MAP[command](gui_reference, instance)
-        except:
-            pass
+        COMMAND_MAP[command](gui_reference, instance)
+        # try:
+        #     COMMAND_MAP[command](gui_reference, instance)
+        # except:
+        #     pass
     else:
         input_command_num(commands, gui_reference, instance)
 
