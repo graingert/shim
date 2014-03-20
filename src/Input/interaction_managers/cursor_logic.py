@@ -29,7 +29,7 @@ def move_cursor_left(instance):
 
 
 def move_cursor_line_num(n, instance):
-    instance.set_curr_top(n - 1)
+    instance.set_curr_top(min(n - 1, instance.get_line_num() - 2))
     instance.set_cursor(0, 0)
 
 def move_cursor_right(instance):

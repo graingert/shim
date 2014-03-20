@@ -2,7 +2,6 @@ from interaction_managers import cursor_logic
 # routes keyboard input to appropriate interaction manager to mutate instance state, page is then re-rendered given new state
 # events are fed directly from user_input
 # interaction manager should not have to parse user input keys directly
-
 def render_page(gui_reference, instance):
     gui_reference.clear_all()
     lines = instance.get_lines()
