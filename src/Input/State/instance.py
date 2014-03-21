@@ -26,6 +26,9 @@ class instance():
     def set_curr_top(self, num):
         self.curr_top = num
 
+    def add_lines(self, index, lines):
+        self.lines.insert(index, lines)
+
     def set_cursor(self, x, y):
         self.cursor_x = max(x, 0)
         if y > self.line_height:

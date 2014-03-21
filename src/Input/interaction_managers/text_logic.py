@@ -23,3 +23,15 @@ def delete_text_char(instance):
         instance.set_line(curr_top + y - 1, prev_line[:-2] + '\n')
         instance.set_cursor(x, y - 1)
         cursor_logic.move_cursor_end_line(instance)
+
+
+def add_new_line_char(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+    curr_line = instance.get_line(y + curr_top)
+
+    if curr_line[x] != '\n':
+        instance.set_line(y + curr_top, curr_line[:x] + '\n')
+        instance.add_lines(y + curr_top + 1, curr_line[x:])
+
+    instance.set_cursor(0, y + 1)

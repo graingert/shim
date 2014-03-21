@@ -27,7 +27,8 @@ COMMAND_MAP = {
                   'asterisk': '*',
                   'quoteright': "'",
                   'quotedbl': '"',
-                  'BackSpace': 'BackSpace'
+                  'BackSpace': 'BackSpace',
+                  'Return': 'Return'
                }
 
 

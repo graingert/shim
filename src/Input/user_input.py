@@ -85,3 +85,6 @@ class user_input():
         # one of the only few scenarios where the command is the same no matter the configuration?
         elif key == 'BackSpace':
             interaction_manager.input_command('delete_char', self.graphics, self.instances[self.curr_instance])
+        # similar to above
+        elif key == 'Return':
+            interaction_manager.input_command('add_new_line', self.graphics, self.instances[self.curr_instance])

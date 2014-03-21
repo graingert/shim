@@ -105,24 +105,30 @@ def delete_char(gui_reference, instance):
     render_page(gui_reference, instance)
 
 
+def add_new_line(gui_reference, instance):
+    text_logic.add_new_line_char(instance)
+    render_page(gui_reference, instance)
+
+
 COMMAND_MAP = {
+                  'move_cursor_up': move_up,
                   'insert_text': insert_text,
                   'delete_char': delete_char,
-                  'move_cursor_up': move_up,
+                  'add_new_line': add_new_line,
                   'move_cursor_left': move_left,
                   'move_cursor_down': move_down,
                   'move_cursor_right': move_right,
-                  'move_cursor_line_num': move_line_num,
                   'move_cursor_end_line': move_end_line,
                   'move_cursor_end_file': move_end_file,
+                  'move_cursor_line_num': move_line_num,
                   'move_cursor_seek_char': move_seek_char,
                   'move_cursor_begin_file': move_begin_file,
                   'move_cursor_next_word_end': move_next_word_end,
+                  'move_cursor_next_paragraph': move_next_paragraph,
+                  'move_cursor_prev_paragraph': move_prev_paragraph,
                   'move_cursor_beginning_line': move_beginning_line,
                   'move_cursor_next_word_front': move_next_word_front,
-                  'move_cursor_prev_word_front': move_prev_word_front,
-                  'move_cursor_next_paragraph': move_next_paragraph,
-                  'move_cursor_prev_paragraph': move_prev_paragraph
+                  'move_cursor_prev_word_front': move_prev_word_front
               }
 
 def input_command(command, gui_reference, instance):
