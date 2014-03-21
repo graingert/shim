@@ -1,4 +1,4 @@
-from interaction_managers import cursor_logic, insert_logic
+from interaction_managers import cursor_logic, text_logic
 # routes keyboard input to appropriate interaction manager to mutate instance state, page is then re-rendered given new state
 # events are fed directly from user_input
 # interaction manager should not have to parse user input keys directly
@@ -96,12 +96,18 @@ def move_seek_char(c_arg, gui_reference, instance):
 
 
 def insert_text(s_arg, gui_reference, instance):
-    insert_logic.insert_text_str(s_arg, instance)
+    text_logic.insert_text_str(s_arg, instance)
+    render_page(gui_reference, instance)
+
+
+def delete_char(gui_reference, instance):
+    text_logic.delete_text_char(instance)
     render_page(gui_reference, instance)
 
 
 COMMAND_MAP = {
                   'insert_text': insert_text,
+                  'delete_char': delete_char,
                   'move_cursor_up': move_up,
                   'move_cursor_left': move_left,
                   'move_cursor_down': move_down,

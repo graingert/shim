@@ -26,7 +26,8 @@ COMMAND_MAP = {
                   'ampersand': '&',
                   'asterisk': '*',
                   'quoteright': "'",
-                  'quotedbl': '"'
+                  'quotedbl': '"',
+                  'BackSpace': 'BackSpace'
                }
 
 

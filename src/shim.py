@@ -7,6 +7,6 @@ if __name__ == '__main__':
     root = Tk()
     input_handler = user_input.user_input()
     input_handler.start_instance('test.py')
-    app = text_canvas.text_canvas(root, 20, input_handler)
+    app = text_canvas.text_canvas(root, 12, input_handler)
     root.mainloop()
 

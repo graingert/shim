@@ -52,7 +52,7 @@ def create_instruction_file(snapshot_count, process_count):
 if __name__ == '__main__':
     parser = OptionParser()
     opt_init(parser)
-    (options, args) = parser.parse_args()
+    (options, args) = parser.parse_args() processcount
     if options.seed:
         seed(options.seed)
     if options.processcount:

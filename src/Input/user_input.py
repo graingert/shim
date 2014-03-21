@@ -79,5 +79,9 @@ class user_input():
             self.curr_state = 'Insert'
 
     def user_key_insert(self, key):
-        cmd = 's' + key + ':' + 'insert_text'
-        interaction_manager.input_command(cmd, self.graphics, self.instances[self.curr_instance])
+        if not key in ['BackSpace', 'Return']:
+            cmd = 's' + key + ':' + 'insert_text'
+            interaction_manager.input_command(cmd, self.graphics, self.instances[self.curr_instance])
+        # one of the only few scenarios where the command is the same no matter the configuration?
+        elif key == 'BackSpace':
+            interaction_manager.input_command('delete_char', self.graphics, self.instances[self.curr_instance])
