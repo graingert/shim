@@ -27,6 +27,7 @@ class text_canvas(Frame):
         input_handler.set_GUI_reference(self)
         self.canvas.bind_all('<Control-f>', input_handler.control_f)
         self.canvas.bind_all('<Control-b>', input_handler.control_b)
+        self.canvas.bind_all('<Escape>', input_handler.escape)
         self.canvas.bind('<Key>', input_handler.key)
 
     # write line of text at given grid co-ordinates

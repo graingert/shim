@@ -39,3 +39,6 @@ class instance():
 
     def set_line_height(self, num):
         self.line_height = num
+
+    def set_line(self, ind, s):
+        self.lines[ind] = s

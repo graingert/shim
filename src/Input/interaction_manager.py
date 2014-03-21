@@ -1,4 +1,4 @@
-from interaction_managers import cursor_logic
+from interaction_managers import cursor_logic, insert_logic
 # routes keyboard input to appropriate interaction manager to mutate instance state, page is then re-rendered given new state
 # events are fed directly from user_input
 # interaction manager should not have to parse user input keys directly
@@ -95,7 +95,13 @@ def move_seek_char(c_arg, gui_reference, instance):
     render_page(gui_reference, instance)
 
 
+def insert_text(s_arg, gui_reference, instance):
+    insert_logic.insert_text_str(s_arg, instance)
+    render_page(gui_reference, instance)
+
+
 COMMAND_MAP = {
+                  'insert_text': insert_text,
                   'move_cursor_up': move_up,
                   'move_cursor_left': move_left,
                   'move_cursor_down': move_down,
@@ -125,17 +131,20 @@ def input_command(command, gui_reference, instance):
         input_command_num(commands, gui_reference, instance)
 
 
+# r denotes repeat arguments i.e 3j means run the 'j' command 3 times
+# n denotes numerical arguments i.e 123gg maps to jump to line 123
+# c denotes character arguments i.e fa maps to find a
+# s denotes character arguments i.e text insert
 def input_command_num(commands, gui_reference, instance):
     opt_arg = commands[0][1:]
     in_arg = commands[1]
-    # n denotes numerical arguments
     if commands[0].startswith('n'):
         COMMAND_MAP[in_arg](int(opt_arg), gui_reference, instance)
-    # r denotes repeat arguments i.e 3j means run the 'j' command 3 times
-    if commands[0].startswith('r'):
+    elif commands[0].startswith('r'):
         for i in range(int(opt_arg)):
             COMMAND_MAP[in_arg](gui_reference, instance)
-    # c denotes character arguments
     elif commands[0].startswith('c'):
         # This should be a single character argument anyway
+        COMMAND_MAP[in_arg](opt_arg, gui_reference, instance)
+    elif commands[0].startswith('s'):
         COMMAND_MAP[in_arg](opt_arg, gui_reference, instance)

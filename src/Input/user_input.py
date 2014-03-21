@@ -23,6 +23,10 @@ class user_input():
         self.graphics = canvas
         self.instances[self.curr_instance].set_line_height(self.graphics.line_height)
 
+# checks if key input an integer greater than 0 and less than 10
+    def is_digit(self, k):
+        return (len(k) == 1) and (ord(k) >= 49 and ord(k) <= 57)
+
     def key(self, event):
         # if key is not in [a-zA-Z0-9] length of keysym will be greater than one
         key = event.keysym
@@ -44,13 +48,19 @@ class user_input():
         # drop on floor for now
         a = 1
 
+    def escape(self, event):
+        self.curr_state = 'Default'
+        self.command_buffer = ''
+
     def user_key_pressed(self, key):
         if self.curr_state == 'Default':
             self.user_key_default(key)
+        elif self.curr_state == 'Insert':
+            self.user_key_insert(key)
 
     def user_key_default(self, key):
         # To be buffered
-        if key in ['m', 'g', 'f'] or self.is_digit(key) or len(self.command_buffer):
+        if key in ['g', 'f'] or self.is_digit(key) or len(self.command_buffer):
             self.command_buffer += key
             s_par = command_parser.parse(self.command_buffer)
 
@@ -65,6 +75,9 @@ class user_input():
         elif DEFAULT_MOVEMENTS.has_key(key):
             interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.instances[self.curr_instance])
             self.command_buffer = ''
-    # checks if key input an integer greater than 0 and less than 10
-    def is_digit(self, k):
-        return (len(k) == 1) and (ord(k) >= 49 and ord(k) <= 57)
+        elif key == 'i':
+            self.curr_state = 'Insert'
+
+    def user_key_insert(self, key):
+        cmd = 's' + key + ':' + 'insert_text'
+        interaction_manager.input_command(cmd, self.graphics, self.instances[self.curr_instance])
