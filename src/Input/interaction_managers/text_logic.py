@@ -33,12 +33,14 @@ def delete_text_char(instance):
 def delete_text_range(px, py, pt, nx, ny, nt, instance):
     # final cursor location should be at fx, fy depending on which comes first
     fx, fy = ((px, py), (nx, ny))[(ny + nt) < (py + pt)]
-    (start, end) = ((py + pt, ny + nt), (ny + nt, py + pt))[(ny + nt) < (py + pt)]
 
     if py + pt == ny + nt:
+        start, end = ((px, nx), (nx, px))[nx < px]
         curr_line = instance.get_line(py + pt)
-        instance.set_line(py + pt, curr_line[:px] + curr_line[nx:])
+        instance.set_line(py + pt, curr_line[:start] + curr_line[end:])
+        instance.set_cursor(start, py)
     else:
+        start, end = ((py + pt, ny + nt), (ny + nt, py + pt))[(ny + nt) < (py + pt)]
         count = 0
         for n in range(start, end + 1):
             if (n == py + pt) and (px, py) == (fx, fy):
@@ -55,7 +57,7 @@ def delete_text_range(px, py, pt, nx, ny, nt, instance):
         for i in range(count):
             instance.remove_line(start + 1)
 
-    instance.set_cursor(fx, fy)
+        instance.set_cursor(fx, fy)
 
 
 def add_new_line_char(instance):

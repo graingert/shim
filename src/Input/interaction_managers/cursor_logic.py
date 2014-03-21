@@ -31,8 +31,11 @@ def move_cursor_line_num(n, instance):
     total = instance.get_line_num()
     per_page = instance.get_line_height()
     if n > (total - per_page):
-        instance.set_cursor(0, min(instance.get_line_num() - 2, per_page - (total - n - 1)))
-        instance.set_curr_top(max(0, total - per_page - 2))
+        if total < per_page:
+            instance.set_cursor(0, min(instance.get_line_num() - 2, n - 1))
+        else:
+            instance.set_cursor(0, min(instance.get_line_num() - 2, per_page - (total - n - 1)))
+            instance.set_curr_top(max(0, total - per_page - 2))
     else:
         instance.set_curr_top(max(0, min(n - 1, instance.get_line_num() - 2)))
         instance.set_cursor(0, 0)
