@@ -11,8 +11,8 @@ def move_cursor_end_line(instance):
 def move_cursor_end_file(instance):
     x, y = instance.get_cursor()
     curr_top = instance.get_curr_top()
-    instance.set_curr_top(instance.get_line_num() - instance.get_line_height() - 2)
-    instance.set_cursor(0, instance.get_line_height())
+    instance.set_curr_top(max(0, instance.get_line_num() - instance.get_line_height() - 2))
+    instance.set_cursor(0, min(instance.get_line_num() -2, instance.get_line_height()))
 
 
 def move_cursor_begin_file(instance):
@@ -31,10 +31,10 @@ def move_cursor_line_num(n, instance):
     total = instance.get_line_num()
     per_page = instance.get_line_height()
     if n > (total - per_page):
-        instance.set_cursor(0, per_page - (total - n - 1))
-        instance.set_curr_top(total - per_page - 2)
+        instance.set_cursor(0, min(instance.get_line_num() - 2, per_page - (total - n - 1)))
+        instance.set_curr_top(max(0, total - per_page - 2))
     else:
-        instance.set_curr_top(min(n - 1, instance.get_line_num() - 2))
+        instance.set_curr_top(max(0, min(n - 1, instance.get_line_num() - 2)))
         instance.set_cursor(0, 0)
 
 
@@ -48,6 +48,7 @@ def move_cursor_seek_char(c, instance):
             instance.set_cursor(x + offset + 1, y)
             break
 
+
 def move_cursor_right(instance):
     x, y = instance.get_cursor()
     curr_top = instance.get_curr_top()
@@ -58,6 +59,7 @@ def move_cursor_right(instance):
         nxt_char = '\n'
     x = (x, x + 1)[nxt_char != '\n']
     instance.set_cursor(x, y)
+
 
 def move_cursor_up(instance):
     curr_top = instance.get_curr_top()
@@ -85,8 +87,8 @@ def move_cursor_next_paragraph(instance):
         elif l != '\n':
             accept_all = True
 
-    instance.set_curr_top(instance.get_line_num() - instance.get_line_height() - 2)
-    instance.set_cursor(0,  instance.get_line_height())
+    instance.set_curr_top(max(0, instance.get_line_num() - instance.get_line_height() - 2))
+    instance.set_cursor(0,  min(instance.get_line_num() - 2, instance.get_line_height()))
 
 
 def move_cursor_prev_paragraph(instance):

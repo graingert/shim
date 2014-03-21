@@ -109,6 +109,16 @@ def add_new_line(gui_reference, instance):
     text_logic.add_new_line_char(instance)
     render_page(gui_reference, instance)
 
+def delete_text_movement(movement, gui_reference, instance):
+    pt = instance.get_curr_top()
+    px, py = instance.get_cursor()
+    COMMAND_MAP[movement](gui_reference, instance)
+    nt = instance.get_curr_top()
+    nx, ny = instance.get_cursor()
+
+    text_logic.delete_text_range(px, py, pt, nx, ny, nt, instance)
+    render_page(gui_reference, instance)
+
 
 COMMAND_MAP = {
                   'move_cursor_up': move_up,
@@ -123,6 +133,7 @@ COMMAND_MAP = {
                   'move_cursor_line_num': move_line_num,
                   'move_cursor_seek_char': move_seek_char,
                   'move_cursor_begin_file': move_begin_file,
+                  'delete_text_movement': delete_text_movement,
                   'move_cursor_next_word_end': move_next_word_end,
                   'move_cursor_next_paragraph': move_next_paragraph,
                   'move_cursor_prev_paragraph': move_prev_paragraph,

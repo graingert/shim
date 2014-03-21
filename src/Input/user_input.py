@@ -57,10 +57,10 @@ class user_input():
             self.user_key_default(key)
         elif self.curr_state == 'Insert':
             self.user_key_insert(key)
-
+    # TODO: CLEAN UP THIS MESS
     def user_key_default(self, key):
         # To be buffered
-        if key in ['g', 'f'] or self.is_digit(key) or len(self.command_buffer):
+        if key in ['g', 'f', 'd'] or self.is_digit(key) or len(self.command_buffer):
             self.command_buffer += key
             s_par = command_parser.parse(self.command_buffer)
 
