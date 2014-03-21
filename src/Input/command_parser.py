@@ -20,14 +20,14 @@ def repeat_default_movement(s):
     return ':'.join(['r' + n_arg, command_list.DEFAULT_MOVEMENTS[s[len(n_arg):]]])
 
 
-MAP = {
+COMMAND_MAP = {
           re.compile('[0-9]*gg'): goto_line_num,
           re.compile('f.'): seek_char,
           re.compile('[0-9]+[h|j|k|l|\{|\}]'): repeat_default_movement
       }
 
 def parse(s):
-    for r, func in MAP.items():
+    for r, func in COMMAND_MAP.items():
         s_par = r.search(s)
         if bool(s_par):
             return func(s_par.group())

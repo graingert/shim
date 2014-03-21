@@ -11,7 +11,6 @@ def move_cursor_end_line(instance):
 def move_cursor_end_file(instance):
     x, y = instance.get_cursor()
     curr_top = instance.get_curr_top()
-    # line num and curr top are both 1 indexed
     instance.set_curr_top(instance.get_line_num() - instance.get_line_height() - 2)
     instance.set_cursor(0, instance.get_line_height())
 
@@ -29,8 +28,14 @@ def move_cursor_left(instance):
 
 
 def move_cursor_line_num(n, instance):
-    instance.set_curr_top(min(n - 1, instance.get_line_num() - 2))
-    instance.set_cursor(0, 0)
+    total = instance.get_line_num()
+    per_page = instance.get_line_height()
+    if n > (total - per_page):
+        instance.set_cursor(0, per_page - (total - n - 1))
+        instance.set_curr_top(total - per_page - 2)
+    else:
+        instance.set_curr_top(min(n - 1, instance.get_line_num() - 2))
+        instance.set_cursor(0, 0)
 
 
 def move_cursor_seek_char(c, instance):
