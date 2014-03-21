@@ -28,7 +28,8 @@ COMMAND_MAP = {
                   'quoteright': "'",
                   'quotedbl': '"',
                   'BackSpace': 'BackSpace',
-                  'Return': 'Return'
+                  'Return': 'Return',
+                  'space': ' '
                }
 
 
