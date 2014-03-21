@@ -153,3 +153,20 @@ def move_cursor_move_prev_word_front(instance):
         for dx in range(len(curr_str) - 1, 0, -1):
             if (curr_str[dx] != ' ' and curr_str[dx - 1] == ' ') or (curr_str[dx] in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
                 return instance.set_cursor(dx, y - dy - 1)
+
+
+def move_cursor_next_word_end(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+    accept_all = False
+    curr_str = instance.get_line(curr_top + y)
+
+    for dx in range(x + 2, len(curr_str) - 1):
+        if (curr_str[dx] == ' ' and curr_str[dx - 1] != ' ') or (curr_str[dx] in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
+            return instance.set_cursor(dx - 1, y)
+
+    for dy, line_num in enumerate(range(y + curr_top + 1, instance.get_line_num() - 1)):
+        curr_str = instance.get_line(line_num)
+        for dx in range(len(curr_str)):
+            if (curr_str[dx] == ' ' and curr_str[dx - 1] != ' ') or (curr_str[dx] in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
+                return instance.set_cursor(dx - 1, y + dy + 1)

@@ -35,14 +35,15 @@ DEFAULT_MOVEMENTS = {
                         'j': 'move_cursor_down',
                         'k': 'move_cursor_up',
                         'l': 'move_cursor_right',
+                        'G': 'move_cursor_end_file',
+                        '$': 'move_cursor_end_line',
+                        'gg': 'move_cursor_begin_file',
+                        'e': 'move_cursor_next_word_end',
+                        '}': 'move_cursor_next_paragraph',
+                        '{': 'move_cursor_prev_paragraph',
                         '0': 'move_cursor_beginning_line',
                         'w': 'move_cursor_next_word_front',
                         'b': 'move_cursor_prev_word_front',
-                        'G': 'move_cursor_end_file',
-                        'gg': 'move_cursor_begin_file',
-                        '$': 'move_cursor_end_line',
-                        '}': 'move_cursor_next_paragraph',
-                        '{': 'move_cursor_prev_paragraph'
                     }
 
 

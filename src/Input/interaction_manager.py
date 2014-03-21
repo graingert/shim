@@ -56,6 +56,10 @@ def move_next_word_front(gui_reference, instance):
     render_page(gui_reference, instance)
 
 
+def move_next_word_end(gui_reference, instance):
+    cursor_logic.move_cursor_next_word_end(instance)
+    render_page(gui_reference, instance)
+
 def move_prev_word_front(gui_reference, instance):
     cursor_logic.move_cursor_move_prev_word_front(instance)
     render_page(gui_reference, instance)
@@ -101,6 +105,7 @@ COMMAND_MAP = {
                   'move_cursor_end_file': move_end_file,
                   'move_cursor_seek_char': move_seek_char,
                   'move_cursor_begin_file': move_begin_file,
+                  'move_cursor_next_word_end': move_next_word_end,
                   'move_cursor_beginning_line': move_beginning_line,
                   'move_cursor_next_word_front': move_next_word_front,
                   'move_cursor_prev_word_front': move_prev_word_front,
