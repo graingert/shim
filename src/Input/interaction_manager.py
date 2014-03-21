@@ -126,15 +126,16 @@ def input_command(command, gui_reference, instance):
 
 
 def input_command_num(commands, gui_reference, instance):
+    opt_arg = commands[0][1:]
+    in_arg = commands[1]
     # n denotes numerical arguments
     if commands[0].startswith('n'):
-        n_arg = commands[0][1:]
-        in_arg = commands[1]
-        COMMAND_MAP[in_arg](int(n_arg), gui_reference, instance)
+        COMMAND_MAP[in_arg](int(opt_arg), gui_reference, instance)
     # r denotes repeat arguments i.e 3j means run the 'j' command 3 times
+    if commands[0].startswith('r'):
+        for i in range(int(opt_arg)):
+            COMMAND_MAP[in_arg](gui_reference, instance)
     # c denotes character arguments
     elif commands[0].startswith('c'):
         # This should be a single character argument anyway
-        c_arg = commands[0][1:]
-        in_arg = commands[1]
-        COMMAND_MAP[in_arg](c_arg, gui_reference, instance)
+        COMMAND_MAP[in_arg](opt_arg, gui_reference, instance)

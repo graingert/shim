@@ -68,4 +68,3 @@ class user_input():
     # checks if key input an integer greater than 0 and less than 10
     def is_digit(self, k):
         return (len(k) == 1) and (ord(k) >= 49 and ord(k) <= 57)
-

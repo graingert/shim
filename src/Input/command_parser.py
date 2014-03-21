@@ -1,4 +1,4 @@
-import re
+import re, command_list
 
 def goto_line_num(s):
     ind = s.find('gg')
@@ -15,13 +15,19 @@ def seek_char(s):
     return ':'.join(['c' + s[1], 'move_cursor_seek_char'])
 
 
-command_list = {
-                   re.compile('[0-9]*gg'): goto_line_num,
-                   re.compile('f.'): seek_char
-               }
+def repeat_default_movement(s):
+    n_arg = re.search('[0-9]*', s).group()
+    return ':'.join(['r' + n_arg, command_list.DEFAULT_MOVEMENTS[s[len(n_arg):]]])
+
+
+MAP = {
+          re.compile('[0-9]*gg'): goto_line_num,
+          re.compile('f.'): seek_char,
+          re.compile('[0-9]+[h|j|k|l|\{|\}]'): repeat_default_movement
+      }
 
 def parse(s):
-    for r, func in command_list.items():
+    for r, func in MAP.items():
         s_par = r.search(s)
         if bool(s_par):
             return func(s_par.group())
