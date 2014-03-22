@@ -41,4 +41,4 @@ def parse(s):
         s_par = r.search(s)
         if bool(s_par):
             return func(s_par.group())
-    return None
+    return ''

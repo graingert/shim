@@ -175,6 +175,7 @@ COMMAND_MAP = {
                   'move_cursor_prev_word_front': move_prev_word_front
               }
 
+
 def input_command(command, gui_reference, local_state, global_state):
     commands = command.split(':')
     if len(commands) == 1:
@@ -184,14 +185,14 @@ def input_command(command, gui_reference, local_state, global_state):
         # except:
         #     pass
     else:
-        input_command_num(commands, gui_reference, local_state, global_state)
+        input_command_arg(commands, gui_reference, local_state, global_state)
 
 
-# r denotes repeat arguments i.e 3j means run the 'j' command 3 times
-# n denotes numerical arguments i.e 123gg maps to jump to line 123
 # c denotes character arguments i.e fa maps to find a
+# n denotes numerical arguments i.e 123gg maps to jump to line 123
+# r denotes repeat arguments i.e 3j means run the 'j' command 3 times
 # s denotes character arguments i.e text insert
-def input_command_num(commands, gui_reference, local_state, global_state):
+def input_command_arg(commands, gui_reference, local_state, global_state):
     opt_arg = commands[0][1:]
     in_arg = commands[1]
     if commands[0].startswith('n'):

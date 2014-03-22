@@ -22,6 +22,7 @@ class user_input():
     def set_GUI_reference(self, canvas):
         self.graphics = canvas
         self.instances[self.curr_instance].set_line_height(self.graphics.line_height)
+        interaction_manager.render_page(self.graphics, self.instances[self.curr_instance])
 
 # checks if key input an integer greater than 0 and less than 10
     def is_digit(self, k):
@@ -57,6 +58,7 @@ class user_input():
             self.user_key_default(key)
         elif self.curr_state == 'Insert':
             self.user_key_insert(key)
+
     # TODO: CLEAN UP THIS MESS
     def user_key_default(self, key):
         # To be buffered
@@ -64,7 +66,7 @@ class user_input():
             self.command_buffer += key
             s_par = command_parser.parse(self.command_buffer)
 
-            if s_par != None:
+            if s_par != '':
                 interaction_manager.input_command(s_par, self.graphics, self.instances[self.curr_instance], self)
                 self.command_buffer = ''
             elif BREAK_MOVEMENTS.has_key(key):
@@ -77,6 +79,7 @@ class user_input():
             self.command_buffer = ''
         elif key == 'i':
             self.curr_state = 'Insert'
+
     # this should be the only state that doesn't change no matter the configuration
     def user_key_insert(self, key):
         if not key in ['BackSpace', 'Return']:
