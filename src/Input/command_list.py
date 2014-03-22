@@ -47,6 +47,7 @@ DEFAULT_MOVEMENTS = {
                         '0': 'move_cursor_beginning_line',
                         'w': 'move_cursor_next_word_front',
                         'b': 'move_cursor_prev_word_front',
+                        'x': 'delete_text_highlight'
                     }
 
 
@@ -57,4 +58,5 @@ BREAK_MOVEMENTS = {
                       'l': 'move_cursor_right',
                       'w': 'move_cursor_next_word_front',
                       'b': 'move_cursor_prev_word_front',
+                      'x': 'delete_text_highlight'
                   }

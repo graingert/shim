@@ -3,9 +3,23 @@ import cursor_logic
 def insert_text_str(s, instance):
     curr_top = instance.get_curr_top()
     x, y = instance.get_cursor()
-    curr_line = instance.get_line(y + curr_top)
+    curr_line = instance.get_line(curr_top + y)
     instance.set_line(curr_top + y, curr_line[:x] + s + curr_line[x:])
     instance.set_cursor(x + len(s), y)
+
+
+def delete_text_highlight(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+    curr_line = instance.get_line(curr_top + y)
+    instance.set_line(curr_top + y, curr_line[:x] + curr_line[x + 1:])
+
+
+def delete_current_line(instance):
+    curr_top = instance.get_curr_top()
+    x, y = instance.get_cursor()
+    instance.remove_line(curr_top + y)
+    instance.set_cursor(0, y)
 
 
 def delete_text_char(instance):

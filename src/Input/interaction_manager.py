@@ -120,11 +120,21 @@ def delete_text_movement(movement, gui_reference, instance):
     render_page(gui_reference, instance)
 
 
+def delete_text_highlight(gui_reference, instance):
+    text_logic.delete_text_highlight(instance)
+    render_page(gui_reference, instance)
+
+
+def delete_curr_line(gui_reference, instance):
+    text_logic.delete_current_line(instance)
+    render_page(gui_reference, instance)
+
 COMMAND_MAP = {
                   'move_cursor_up': move_up,
                   'insert_text': insert_text,
                   'delete_char': delete_char,
                   'add_new_line': add_new_line,
+                  'delete_curr_line': delete_curr_line,
                   'move_cursor_left': move_left,
                   'move_cursor_down': move_down,
                   'move_cursor_right': move_right,
@@ -134,6 +144,7 @@ COMMAND_MAP = {
                   'move_cursor_seek_char': move_seek_char,
                   'move_cursor_begin_file': move_begin_file,
                   'delete_text_movement': delete_text_movement,
+                  'delete_text_highlight': delete_text_highlight,
                   'move_cursor_next_word_end': move_next_word_end,
                   'move_cursor_next_paragraph': move_next_paragraph,
                   'move_cursor_prev_paragraph': move_prev_paragraph,

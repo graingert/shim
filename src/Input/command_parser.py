@@ -23,11 +23,16 @@ def delete_text_movement(s):
     return ':'.join(['s' + command_list.DEFAULT_MOVEMENTS[s[1:]], 'delete_text_movement'])
 
 
+def delete_curr_line(s):
+    return 'delete_curr_line'
+
+
 COMMAND_MAP = {
                    re.compile('[0-9]*gg'): goto_line_num,
                    re.compile('f.'): seek_char,
                    re.compile('[0-9]+[h|j|k|l|\{|\}]'): repeat_default_movement,
-                   re.compile('d[h|j|k|l|{|}|w|b|e]'): delete_text_movement
+                   re.compile('d[h|j|k|l|{|}|w|b|e]'): delete_text_movement,
+                   re.compile('dd'): delete_curr_line
               }
 
 
