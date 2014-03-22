@@ -34,20 +34,22 @@ COMMAND_MAP = {
 
 
 DEFAULT_MOVEMENTS = {
+                        'k': 'move_cursor_up',
                         'h': 'move_cursor_left',
                         'j': 'move_cursor_down',
-                        'k': 'move_cursor_up',
                         'l': 'move_cursor_right',
                         'G': 'move_cursor_end_file',
                         '$': 'move_cursor_end_line',
+                        'O': 'insert_new_line_above',
+                        'o': 'insert_new_line_below',
+                        'x': 'delete_text_highlight',
                         'gg': 'move_cursor_begin_file',
                         'e': 'move_cursor_next_word_end',
                         '}': 'move_cursor_next_paragraph',
                         '{': 'move_cursor_prev_paragraph',
                         '0': 'move_cursor_beginning_line',
                         'w': 'move_cursor_next_word_front',
-                        'b': 'move_cursor_prev_word_front',
-                        'x': 'delete_text_highlight'
+                        'b': 'move_cursor_prev_word_front'
                     }
 
 

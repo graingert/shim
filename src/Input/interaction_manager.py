@@ -129,21 +129,34 @@ def delete_curr_line(gui_reference, local_state, global_state):
     text_logic.delete_current_line(local_state)
     render_page(gui_reference, local_state)
 
+
+def insert_new_line_above(gui_reference, local_state, global_state):
+    text_logic.insert_new_line_above(local_state)
+    render_page(gui_reference, local_state)
+
+
+def insert_new_line_below(gui_reference, local_state, global_state):
+    text_logic.insert_new_line_below(local_state)
+    render_page(gui_reference, local_state)
+
+
 COMMAND_MAP = {
                   'move_cursor_up': move_up,
                   'insert_text': insert_text,
                   'delete_char': delete_char,
                   'add_new_line': add_new_line,
-                  'delete_curr_line': delete_curr_line,
                   'move_cursor_left': move_left,
                   'move_cursor_down': move_down,
                   'move_cursor_right': move_right,
+                  'delete_curr_line': delete_curr_line,
                   'move_cursor_end_line': move_end_line,
                   'move_cursor_end_file': move_end_file,
                   'move_cursor_line_num': move_line_num,
                   'move_cursor_seek_char': move_seek_char,
                   'move_cursor_begin_file': move_begin_file,
                   'delete_text_movement': delete_text_movement,
+                  'insert_new_line_above': insert_new_line_above,
+                  'insert_new_line_below': insert_new_line_below,
                   'delete_text_highlight': delete_text_highlight,
                   'move_cursor_next_word_end': move_next_word_end,
                   'move_cursor_next_paragraph': move_next_paragraph,

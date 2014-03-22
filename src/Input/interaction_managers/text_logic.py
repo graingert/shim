@@ -22,6 +22,28 @@ def delete_current_line(local_state):
     local_state.set_cursor(0, y)
 
 
+def insert_new_line_below(local_state):
+    curr_top = local_state.get_curr_top()
+    x, y = local_state.get_cursor()
+    curr_line = local_state.get_line(curr_top + y)
+
+    new_line = (' ' * (len(curr_line) - len(curr_line.lstrip()))) + '\n'
+    local_state.add_line(y + curr_top + 1, new_line)
+    local_state.set_cursor(len(curr_line) - len(curr_line.lstrip()), y + 1)
+
+
+def insert_new_line_above(local_state):
+    curr_top = local_state.get_curr_top()
+    x, y = local_state.get_cursor()
+    curr_line = local_state.get_line(curr_top + y)
+
+    new_line = (' ' * (len(curr_line) - len(curr_line.lstrip()))) + '\n'
+    local_state.add_line(y + curr_top, new_line)
+    local_state.set_cursor(len(curr_line) - len(curr_line.lstrip()), y)
+
+
+
+
 def delete_text_char(local_state):
     curr_top = local_state.get_curr_top()
     x, y = local_state.get_cursor()

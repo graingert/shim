@@ -26,8 +26,8 @@ class instance():
     def set_curr_top(self, num):
         self.curr_top = num
 
-    def add_line(self, index, lines):
-        self.lines.insert(index, lines)
+    def add_line(self, index, line):
+        self.lines.insert(index, line)
 
     def remove_line(self, index):
         self.lines.pop(index)
