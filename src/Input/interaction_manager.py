@@ -2,11 +2,11 @@ from interaction_managers import cursor_logic, text_logic
 # routes keyboard input to appropriate interaction manager to mutate instance state, page is then re-rendered given new state
 # events are fed directly from user_input
 # interaction manager should not have to parse user input keys directly
-def render_page(gui_reference, instance):
+def render_page(gui_reference, local_state):
     gui_reference.clear_all()
-    lines = instance.get_lines()
-    x, y = instance.get_cursor()
-    curr_top = instance.get_curr_top()
+    lines = local_state.get_lines()
+    x, y = local_state.get_cursor()
+    curr_top = local_state.get_curr_top()
     buff_line_count = gui_reference.get_line_height()
 
     gui_reference.draw_cursor(x, y)
@@ -21,113 +21,113 @@ def render_page(gui_reference, instance):
             break
 
 
-def move_left(gui_reference, instance):
-    cursor_logic.move_cursor_left(instance)
-    render_page(gui_reference, instance)
+def move_left(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_left(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_right(gui_reference, instance):
-    cursor_logic.move_cursor_right(instance)
-    render_page(gui_reference, instance)
+def move_right(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_right(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_down(gui_reference, instance):
-    cursor_logic.move_cursor_down(instance)
-    render_page(gui_reference, instance)
+def move_down(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_down(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_up(gui_reference, instance):
-    cursor_logic.move_cursor_up(instance)
-    render_page(gui_reference, instance)
+def move_up(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_up(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_beginning_line(gui_reference, instance):
-    cursor_logic.move_cursor_beginning_line(instance)
-    render_page(gui_reference, instance)
+def move_beginning_line(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_beginning_line(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_end_line(gui_reference, instance):
-    cursor_logic.move_cursor_end_line(instance)
-    render_page(gui_reference, instance)
+def move_end_line(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_end_line(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_next_word_front(gui_reference, instance):
-    cursor_logic.move_cursor_next_word_front(instance)
-    render_page(gui_reference, instance)
+def move_next_word_front(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_next_word_front(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_next_word_end(gui_reference, instance):
-    cursor_logic.move_cursor_next_word_end(instance)
-    render_page(gui_reference, instance)
+def move_next_word_end(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_next_word_end(local_state)
+    render_page(gui_reference, local_state)
 
-def move_prev_word_front(gui_reference, instance):
-    cursor_logic.move_cursor_move_prev_word_front(instance)
-    render_page(gui_reference, instance)
-
-
-def move_end_file(gui_reference, instance):
-    cursor_logic.move_cursor_end_file(instance)
-    render_page(gui_reference, instance)
+def move_prev_word_front(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_move_prev_word_front(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_begin_file(gui_reference, instance):
-    cursor_logic.move_cursor_begin_file(instance)
-    render_page(gui_reference, instance)
+def move_end_file(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_end_file(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_next_paragraph(gui_reference, instance):
-    cursor_logic.move_cursor_next_paragraph(instance)
-    render_page(gui_reference, instance)
+def move_begin_file(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_begin_file(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_prev_paragraph(gui_reference, instance):
-    cursor_logic.move_cursor_prev_paragraph(instance)
-    render_page(gui_reference, instance)
+def move_next_paragraph(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_next_paragraph(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_line_num(n_arg, gui_reference, instance):
-    cursor_logic.move_cursor_line_num(n_arg, instance)
-    render_page(gui_reference, instance)
+def move_prev_paragraph(gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_prev_paragraph(local_state)
+    render_page(gui_reference, local_state)
 
 
-def move_seek_char(c_arg, gui_reference, instance):
-    cursor_logic.move_cursor_seek_char(c_arg, instance)
-    render_page(gui_reference, instance)
+def move_line_num(n_arg, gui_reference, local_state, global_state):
+    cursor_logic.move_cursor_line_num(n_arg, local_state)
+    render_page(gui_reference, local_state)
 
 
-def insert_text(s_arg, gui_reference, instance):
-    text_logic.insert_text_str(s_arg, instance)
-    render_page(gui_reference, instance)
+def move_seek_char(c_arg, gui_reference, local_state):
+    cursor_logic.move_cursor_seek_char(c_arg, local_state)
+    render_page(gui_reference, local_state)
 
 
-def delete_char(gui_reference, instance):
-    text_logic.delete_text_char(instance)
-    render_page(gui_reference, instance)
+def insert_text(s_arg, gui_reference, local_state):
+    text_logic.insert_text_str(s_arg, local_state)
+    render_page(gui_reference, local_state)
 
 
-def add_new_line(gui_reference, instance):
-    text_logic.add_new_line_char(instance)
-    render_page(gui_reference, instance)
-
-def delete_text_movement(movement, gui_reference, instance):
-    pt = instance.get_curr_top()
-    px, py = instance.get_cursor()
-    COMMAND_MAP[movement](gui_reference, instance)
-    nt = instance.get_curr_top()
-    nx, ny = instance.get_cursor()
-
-    text_logic.delete_text_range(px, py, pt, nx, ny, nt, instance)
-    render_page(gui_reference, instance)
+def delete_char(gui_reference, local_state, global_state):
+    text_logic.delete_text_char(local_state)
+    render_page(gui_reference, local_state)
 
 
-def delete_text_highlight(gui_reference, instance):
-    text_logic.delete_text_highlight(instance)
-    render_page(gui_reference, instance)
+def add_new_line(gui_reference, local_state, global_state):
+    text_logic.add_new_line_char(local_state)
+    render_page(gui_reference, local_state)
+
+def delete_text_movement(movement, gui_reference, local_state, global_state):
+    pt = local_state.get_curr_top()
+    px, py = local_state.get_cursor()
+    COMMAND_MAP[movement](gui_reference, local_state, global_state)
+    nt = local_state.get_curr_top()
+    nx, ny = local_state.get_cursor()
+
+    text_logic.delete_text_range(px, py, pt, nx, ny, nt, local_state)
+    render_page(gui_reference, local_state)
 
 
-def delete_curr_line(gui_reference, instance):
-    text_logic.delete_current_line(instance)
-    render_page(gui_reference, instance)
+def delete_text_highlight(gui_reference, local_state, global_state):
+    text_logic.delete_text_highlight(local_state)
+    render_page(gui_reference, local_state)
+
+
+def delete_curr_line(gui_reference, local_state, global_state):
+    text_logic.delete_current_line(local_state)
+    render_page(gui_reference, local_state)
 
 COMMAND_MAP = {
                   'move_cursor_up': move_up,
@@ -153,32 +153,32 @@ COMMAND_MAP = {
                   'move_cursor_prev_word_front': move_prev_word_front
               }
 
-def input_command(command, gui_reference, instance):
+def input_command(command, gui_reference, local_state, global_state):
     commands = command.split(':')
     if len(commands) == 1:
-        COMMAND_MAP[command](gui_reference, instance)
+        COMMAND_MAP[command](gui_reference, local_state, global_state)
         # try:
         #     COMMAND_MAP[command](gui_reference, instance)
         # except:
         #     pass
     else:
-        input_command_num(commands, gui_reference, instance)
+        input_command_num(commands, gui_reference, local_state, global_state)
 
 
 # r denotes repeat arguments i.e 3j means run the 'j' command 3 times
 # n denotes numerical arguments i.e 123gg maps to jump to line 123
 # c denotes character arguments i.e fa maps to find a
 # s denotes character arguments i.e text insert
-def input_command_num(commands, gui_reference, instance):
+def input_command_num(commands, gui_reference, local_state, global_state):
     opt_arg = commands[0][1:]
     in_arg = commands[1]
     if commands[0].startswith('n'):
-        COMMAND_MAP[in_arg](int(opt_arg), gui_reference, instance)
+        COMMAND_MAP[in_arg](int(opt_arg), gui_reference, local_state, global_state)
     elif commands[0].startswith('r'):
         for i in range(int(opt_arg)):
-            COMMAND_MAP[in_arg](gui_reference, instance)
+            COMMAND_MAP[in_arg](gui_reference, local_state, global_state)
     elif commands[0].startswith('c'):
         # This should be a single character argument anyway
-        COMMAND_MAP[in_arg](opt_arg, gui_reference, instance)
+        COMMAND_MAP[in_arg](opt_arg, gui_reference, local_state, global_state)
     elif commands[0].startswith('s'):
-        COMMAND_MAP[in_arg](opt_arg, gui_reference, instance)
+        COMMAND_MAP[in_arg](opt_arg, gui_reference, local_state, global_state)

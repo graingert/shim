@@ -65,26 +65,26 @@ class user_input():
             s_par = command_parser.parse(self.command_buffer)
 
             if s_par != None:
-                interaction_manager.input_command(s_par, self.graphics, self.instances[self.curr_instance])
+                interaction_manager.input_command(s_par, self.graphics, self.instances[self.curr_instance], self)
                 self.command_buffer = ''
             elif BREAK_MOVEMENTS.has_key(key):
-                interaction_manager.input_command(BREAK_MOVEMENTS[key], self.graphics, self.instances[self.curr_instance])
+                interaction_manager.input_command(BREAK_MOVEMENTS[key], self.graphics, self.instances[self.curr_instance], self)
                 self.command_buffer = ''
 
         # default movement requested
         elif DEFAULT_MOVEMENTS.has_key(key):
-            interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.instances[self.curr_instance])
+            interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.instances[self.curr_instance], self)
             self.command_buffer = ''
         elif key == 'i':
             self.curr_state = 'Insert'
-
+    # this should be the only state that doesn't change no matter the configuration
     def user_key_insert(self, key):
         if not key in ['BackSpace', 'Return']:
             cmd = 's' + key + ':' + 'insert_text'
-            interaction_manager.input_command(cmd, self.graphics, self.instances[self.curr_instance])
+            interaction_manager.input_command(cmd, self.graphics, self.instances[self.curr_instance], self)
         # one of the only few scenarios where the command is the same no matter the configuration?
         elif key == 'BackSpace':
-            interaction_manager.input_command('delete_char', self.graphics, self.instances[self.curr_instance])
+            interaction_manager.input_command('delete_char', self.graphics, self.instances[self.curr_instance], self)
         # similar to above
         elif key == 'Return':
-            interaction_manager.input_command('add_new_line', self.graphics, self.instances[self.curr_instance])
+            interaction_manager.input_command('add_new_line', self.graphics, self.instances[self.curr_instance], self)
