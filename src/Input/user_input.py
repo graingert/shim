@@ -23,7 +23,7 @@ class user_input():
     def set_GUI_reference(self, canvas):
         self.graphics = canvas
         self.instances[self.curr_instance].set_line_height(self.graphics.line_height)
-        interaction_manager.render_page(self.graphics, self.instances[self.curr_instance])
+        interaction_manager.render_page([], [], self.graphics, self.instances[self.curr_instance], self)
 
     def get_curr_instance(self):
         return self.instances[self.curr_instance]
@@ -62,6 +62,7 @@ class user_input():
         # run up or down command depending on scroll direction
         delta = event.delta * -1
         self.curr_state = 'Default'
+        self.command_buffer = ''
         cmd = 'n' + str(delta) + ':mouse_scroll'
         interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), None)
 
@@ -71,10 +72,6 @@ class user_input():
         elif self.curr_state == 'Insert':
             self.user_key_insert(key)
         elif self.curr_state == 'Visual':
-            # set once and then never mutate this ever again per visual selection
-            curr_instance = self.get_curr_instance()
-            x, y = curr_instance.get_cursor()
-            curr_instance.set_visual_anchor(x, y)
             self.user_key_visual(key)
 
     # TODO: CLEAN UP THIS MESS
@@ -82,7 +79,7 @@ class user_input():
         # To be buffered
         if key in ['g', 'f', 'd'] or self.is_digit(key) or len(self.command_buffer):
             self.command_buffer += key
-            s_par = command_parser.parse(self.command_buffer)
+            s_par = command_parser.default_parse(self.command_buffer)
 
             if s_par != '':
                 interaction_manager.input_command(s_par, self.graphics, self.get_curr_instance(), self)
@@ -95,10 +92,13 @@ class user_input():
         elif DEFAULT_MOVEMENTS.has_key(key):
             interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.get_curr_instance(), self)
             self.command_buffer = ''
-        # this could be a dict, or it could be a bunch of if elses ones slightly more obvious than the other.
+        # this could be a dict, or it could be a bunch of if elses. If elses are slightly more intuitive than the other.
         elif key == 'i':
             self.curr_state = 'Insert'
         elif key == 'v':
+            curr_instance = self.get_curr_instance()
+            # set once and then never mutate this ever again per visual selection
+            self.get_curr_instance().set_visual_anchor()
             self.curr_state = 'Visual'
 
     # this should be the only state that doesn't change no matter the configuration
@@ -114,5 +114,8 @@ class user_input():
             interaction_manager.input_command('add_new_line', self.graphics, self.get_curr_instance(), self)
 
     def user_key_visual(self, key):
-        print self.get_curr_instance().visual_x, self.get_curr_instance().visual_y
-        print 'VISUALLLLLL'
+        if DEFAULT_MOVEMENTS.has_key(key):
+            motion = DEFAULT_MOVEMENTS[key]
+            cmd = 's' + motion + ':visual_movement'
+            interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
+            self.command_buffer = ''

@@ -31,17 +31,28 @@ def delete_curr_line(s):
         return 'delete_curr_line'
 
 
-COMMAND_MAP = {
-                   re.compile('[0-9]*gg'): goto_line_num,
-                   re.compile('f.'): seek_char,
-                   re.compile('[0-9]+[h|j|k|l|\{|\}]'): repeat_default_movement,
-                   re.compile('d[h|j|k|l|{|}|w|b|e]'): delete_text_movement,
-                   re.compile('[0-9]*dd'): delete_curr_line
-              }
+DEFAULT_COMMAND_MAP = {
+                          re.compile('[0-9]*gg'): goto_line_num,
+                          re.compile('f.'): seek_char,
+                          re.compile('[0-9]+[h|j|k|l|\{|\}]'): repeat_default_movement,
+                          re.compile('d[h|j|k|l|{|}|w|b|e]'): delete_text_movement,
+                          re.compile('[0-9]*dd'): delete_curr_line
+                      }
 
 
-def parse(s):
-    for r, func in COMMAND_MAP.items():
+def default_parse(s):
+    for r, func in DEFAULT_COMMAND_MAP.items():
+        s_par = r.search(s)
+        if bool(s_par):
+            return func(s_par.group())
+    return ''
+
+
+VISUAL_COMMAND_MAP = {
+                     }
+
+def visual_parse(s):
+    for r, func in VISUAL_COMMAND_MAP.items():
         s_par = r.search(s)
         if bool(s_par):
             return func(s_par.group())

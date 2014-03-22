@@ -1,8 +1,10 @@
+from copy import deepcopy
+
 class instance():
     def __init__(self, filename):
         self.lines = [line for line in open(filename, 'r')]
-        self.cursor_x, self.cursor_y = 0, 0
-        self.curr_top = 0
+        self.cursor_x, self.cursor_y, self.curr_top = 0, 0, 0
+        self.visual_x, self.visual_y, self.visual_curr_top = 0, 0, 0
 
     def get_line(self, index):
         return self.lines[index]
@@ -23,6 +25,9 @@ class instance():
     def get_line_num(self):
         return len(self.lines)
 
+    def get_visual_anchors(self):
+        return self.visual_x, self.visual_y, self.visual_curr_top
+
     def add_line(self, index, line):
         self.lines.insert(index, line)
 
@@ -38,8 +43,8 @@ class instance():
     def set_line(self, ind, s):
         self.lines[ind] = s
 
-    def set_visual_anchor(self, x, y):
-        self.visual_x, self.visual_y = x, y
+    def set_visual_anchor(self):
+        self.visual_x, self.visual_y, self.visual_curr_top = self.cursor_x, self.cursor_y, self.curr_top
 
     def set_cursor(self, x, y):
         self.cursor_x = max(x, 0)
