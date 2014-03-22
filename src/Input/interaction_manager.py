@@ -90,12 +90,12 @@ def move_line_num(n_arg, gui_reference, local_state, global_state):
     render_page(gui_reference, local_state)
 
 
-def move_seek_char(c_arg, gui_reference, local_state):
+def move_seek_char(c_arg, gui_reference, local_state, global_state):
     cursor_logic.move_cursor_seek_char(c_arg, local_state)
     render_page(gui_reference, local_state)
 
 
-def insert_text(s_arg, gui_reference, local_state):
+def insert_text(s_arg, gui_reference, local_state, global_state):
     text_logic.insert_text_str(s_arg, local_state)
     render_page(gui_reference, local_state)
 
