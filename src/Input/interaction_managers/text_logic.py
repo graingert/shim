@@ -42,8 +42,6 @@ def insert_new_line_above(local_state):
     local_state.set_cursor(len(curr_line) - len(curr_line.lstrip()), y)
 
 
-
-
 def delete_text_char(local_state):
     curr_top = local_state.get_curr_top()
     x, y = local_state.get_cursor()
@@ -101,8 +99,8 @@ def add_new_line_char(local_state):
     x, y = local_state.get_cursor()
     curr_line = local_state.get_line(y + curr_top)
 
-    if curr_line[x] != '\n':
-        local_state.set_line(y + curr_top, curr_line[:x] + '\n')
-        local_state.add_line(y + curr_top + 1, curr_line[x:])
+    #  this should be safe I think, no need to perform new line check because python string splicing doesn't toss index exceptions if curr_line[x] != '\n':
+    local_state.set_line(y + curr_top, curr_line[:x] + '\n')
+    local_state.add_line(y + curr_top + 1, curr_line[x:])
 
     local_state.set_cursor(0, y + 1)

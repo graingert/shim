@@ -23,14 +23,23 @@ class instance():
     def get_line_num(self):
         return len(self.lines)
 
-    def set_curr_top(self, num):
-        self.curr_top = num
-
     def add_line(self, index, line):
         self.lines.insert(index, line)
 
     def remove_line(self, index):
         self.lines.pop(index)
+
+    def set_curr_top(self, num):
+        self.curr_top = num
+
+    def set_line_height(self, num):
+        self.line_height = num
+
+    def set_line(self, ind, s):
+        self.lines[ind] = s
+
+    def set_visual_anchor(self, x, y):
+        self.visual_x, self.visual_y = x, y
 
     def set_cursor(self, x, y):
         self.cursor_x = max(x, 0)
@@ -43,8 +52,4 @@ class instance():
         else:
             self.cursor_y = y
 
-    def set_line_height(self, num):
-        self.line_height = num
 
-    def set_line(self, ind, s):
-        self.lines[ind] = s

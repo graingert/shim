@@ -25,6 +25,9 @@ class user_input():
         self.instances[self.curr_instance].set_line_height(self.graphics.line_height)
         interaction_manager.render_page(self.graphics, self.instances[self.curr_instance])
 
+    def get_curr_instance(self):
+        return self.instances[self.curr_instance]
+
     # checks if key input an integer greater than 0 and less than 10
     def is_digit(self, k):
         return (len(k) == 1) and (ord(k) >= 49 and ord(k) <= 57)
@@ -53,19 +56,26 @@ class user_input():
     def escape(self, event):
         self.curr_state = 'Default'
         self.command_buffer = ''
+
     # TODO: THIS LOOKS HACKY
     def mouse_scroll(self, event):
         # run up or down command depending on scroll direction
         delta = event.delta * -1
         self.curr_state = 'Default'
         cmd = 'n' + str(delta) + ':mouse_scroll'
-        interaction_manager.input_command(cmd, self.graphics, self.instances[self.curr_instance], None)
+        interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), None)
 
     def user_key_pressed(self, key):
         if self.curr_state == 'Default':
             self.user_key_default(key)
         elif self.curr_state == 'Insert':
             self.user_key_insert(key)
+        elif self.curr_state == 'Visual':
+            # set once and then never mutate this ever again per visual selection
+            curr_instance = self.get_curr_instance()
+            x, y = curr_instance.get_cursor()
+            curr_instance.set_visual_anchor(x, y)
+            self.user_key_visual(key)
 
     # TODO: CLEAN UP THIS MESS
     def user_key_default(self, key):
@@ -75,27 +85,34 @@ class user_input():
             s_par = command_parser.parse(self.command_buffer)
 
             if s_par != '':
-                interaction_manager.input_command(s_par, self.graphics, self.instances[self.curr_instance], self)
+                interaction_manager.input_command(s_par, self.graphics, self.get_curr_instance(), self)
                 self.command_buffer = ''
             elif BREAK_MOVEMENTS.has_key(key):
-                interaction_manager.input_command(BREAK_MOVEMENTS[key], self.graphics, self.instances[self.curr_instance], self)
+                interaction_manager.input_command(BREAK_MOVEMENTS[key], self.graphics, self.get_curr_instance(), self)
                 self.command_buffer = ''
 
         # default movement requested
         elif DEFAULT_MOVEMENTS.has_key(key):
-            interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.instances[self.curr_instance], self)
+            interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.get_curr_instance(), self)
             self.command_buffer = ''
+        # this could be a dict, or it could be a bunch of if elses ones slightly more obvious than the other.
         elif key == 'i':
             self.curr_state = 'Insert'
+        elif key == 'v':
+            self.curr_state = 'Visual'
 
     # this should be the only state that doesn't change no matter the configuration
     def user_key_insert(self, key):
         if not key in ['BackSpace', 'Return']:
             cmd = 's' + key + ':' + 'insert_text'
-            interaction_manager.input_command(cmd, self.graphics, self.instances[self.curr_instance], self)
+            interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
         # one of the only few scenarios where the command is the same no matter the configuration?
         elif key == 'BackSpace':
-            interaction_manager.input_command('delete_char', self.graphics, self.instances[self.curr_instance], self)
+            interaction_manager.input_command('delete_char', self.graphics, self.get_curr_instance(), self)
         # similar to above
         elif key == 'Return':
-            interaction_manager.input_command('add_new_line', self.graphics, self.instances[self.curr_instance], self)
+            interaction_manager.input_command('add_new_line', self.graphics, self.get_curr_instance(), self)
+
+    def user_key_visual(self, key):
+        print self.get_curr_instance().visual_x, self.get_curr_instance().visual_y
+        print 'VISUALLLLLL'

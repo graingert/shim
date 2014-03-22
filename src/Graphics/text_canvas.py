@@ -41,6 +41,7 @@ class text_canvas(Frame):
         self.canvas.create_text(x_val, y_val, anchor='nw', text=text, font=self.text_font, fill=color)
 
     def draw_line_numbers(self, start):
+        self.canvas.create_rectangle(0, 0, self.line_num_spacing / 2, self.winfo_screenheight(), fill='#073642', outline='#073642')
         for i in range(self.line_height + 1):
             # 2 pixel spacing between each line
             self.canvas.create_text(0, self.cheight * i + (i * 2), anchor='nw', text=str(start + i), font=self.text_font, fill='#839496')

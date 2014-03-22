@@ -92,10 +92,10 @@ def move_cursor_next_paragraph(local_state):
     accept_all = False
 
     for offset, line_num in enumerate(range(y + curr_top + 1, local_state.get_line_num() - 1)):
-        l = local_state.get_line(line_num)
-        if (l == '\n') and accept_all:
+        l = local_state.get_line(line_num).strip()
+        if (l == '') and accept_all:
             return local_state.set_cursor(0, y + offset + 1)
-        elif l != '\n':
+        elif l != '':
             accept_all = True
 
     local_state.set_curr_top(max(0, local_state.get_line_num() - local_state.get_line_height() - 2))
@@ -108,11 +108,10 @@ def move_cursor_prev_paragraph(local_state):
     accept_all = False
 
     for offset, line_num in enumerate(range(y + curr_top - 1, -1, -1)):
-        l = local_state.get_line(line_num)
-
-        if l == '\n' and accept_all:
+        l = local_state.get_line(line_num).strip()
+        if (l == '') and accept_all:
             return local_state.set_cursor(0, y - offset - 1)
-        elif l != '\n':
+        elif l != '':
             accept_all = True
 
     local_state.set_curr_top(0)
