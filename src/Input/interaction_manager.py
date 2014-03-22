@@ -131,12 +131,20 @@ def delete_curr_line(gui_reference, local_state, global_state):
 
 
 def insert_new_line_above(gui_reference, local_state, global_state):
+    global_state.curr_state = 'Insert'
     text_logic.insert_new_line_above(local_state)
     render_page(gui_reference, local_state)
 
 
 def insert_new_line_below(gui_reference, local_state, global_state):
+    global_state.curr_state = 'Insert'
     text_logic.insert_new_line_below(local_state)
+    render_page(gui_reference, local_state)
+
+
+def insert_end_of_line(gui_reference, local_state, global_state):
+    global_state.curr_state = 'Insert'
+    cursor_logic.move_cursor_past_end_line(local_state)
     render_page(gui_reference, local_state)
 
 
@@ -153,6 +161,7 @@ COMMAND_MAP = {
                   'move_cursor_end_file': move_end_file,
                   'move_cursor_line_num': move_line_num,
                   'move_cursor_seek_char': move_seek_char,
+                  'insert_end_of_line': insert_end_of_line,
                   'move_cursor_begin_file': move_begin_file,
                   'delete_text_movement': delete_text_movement,
                   'insert_new_line_above': insert_new_line_above,

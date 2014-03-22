@@ -38,6 +38,7 @@ DEFAULT_MOVEMENTS = {
                         'h': 'move_cursor_left',
                         'j': 'move_cursor_down',
                         'l': 'move_cursor_right',
+                        'A': 'insert_end_of_line',
                         'G': 'move_cursor_end_file',
                         '$': 'move_cursor_end_line',
                         'O': 'insert_new_line_above',

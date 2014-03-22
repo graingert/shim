@@ -8,6 +8,14 @@ def move_cursor_end_line(local_state):
     curr_line = local_state.get_line(y + curr_top)
     local_state.set_cursor(len(curr_line) - 2, y)
 
+
+def move_cursor_past_end_line(local_state):
+    curr_top = local_state.get_curr_top()
+    x, y = local_state.get_cursor()
+    curr_line = local_state.get_line(y + curr_top)
+    local_state.set_cursor(len(curr_line) - 1, y)
+
+
 def move_cursor_end_file(local_state):
     x, y = local_state.get_cursor()
     curr_top = local_state.get_curr_top()
