@@ -55,12 +55,11 @@ class user_input():
         self.command_buffer = ''
     # TODO: THIS LOOKS HACKY
     def mouse_scroll(self, event):
-        self.curr_state = 'Default'
         # run up or down command depending on scroll direction
-        if event.num == 5 or event.delta < 0:
-            self.user_key_pressed('j')
-        if event.num == 4 or event.delta > 0:
-            self.user_key_pressed('k')
+        delta = event.delta * -1
+        self.curr_state = 'Default'
+        cmd = 'n' + str(delta) + ':mouse_scroll'
+        interaction_manager.input_command(cmd, self.graphics, self.instances[self.curr_instance], None)
 
     def user_key_pressed(self, key):
         if self.curr_state == 'Default':

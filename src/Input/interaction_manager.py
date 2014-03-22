@@ -148,10 +148,21 @@ def insert_end_of_line(gui_reference, local_state, global_state):
     render_page(gui_reference, local_state)
 
 
+def mouse_scroll(delta, gui_reference, local_state, global_state):
+    curr_top = local_state.get_curr_top()
+    x, y = local_state.get_cursor()
+    if y + int(delta) + curr_top <= local_state.get_line_num() - 2:
+        local_state.set_cursor(x, y + int(delta))
+        render_page(gui_reference, local_state)
+    else:
+        move_end_file(gui_reference, local_state, global_state)
+
+
 COMMAND_MAP = {
                   'move_cursor_up': move_up,
                   'insert_text': insert_text,
                   'delete_char': delete_char,
+                  'mouse_scroll': mouse_scroll,
                   'add_new_line': add_new_line,
                   'move_cursor_left': move_left,
                   'move_cursor_down': move_down,
