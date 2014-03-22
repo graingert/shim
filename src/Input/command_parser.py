@@ -24,7 +24,11 @@ def delete_text_movement(s):
 
 
 def delete_curr_line(s):
-    return 'delete_curr_line'
+    n_arg = re.search('[0-9]*', s).group()
+    if bool(n_arg):
+        return ':'.join(['r' + n_arg, 'delete_curr_line'])
+    else:
+        return 'delete_curr_line'
 
 
 COMMAND_MAP = {
@@ -32,7 +36,7 @@ COMMAND_MAP = {
                    re.compile('f.'): seek_char,
                    re.compile('[0-9]+[h|j|k|l|\{|\}]'): repeat_default_movement,
                    re.compile('d[h|j|k|l|{|}|w|b|e]'): delete_text_movement,
-                   re.compile('dd'): delete_curr_line
+                   re.compile('[0-9]*dd'): delete_curr_line
               }
 
 

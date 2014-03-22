@@ -15,6 +15,7 @@ class user_input():
         self.command_buffer = ''
         self.curr_instance = 0
         self.instances = []
+        self.undo_buffer = []
 
     def start_instance(self, filename):
         self.instances.append(instance.instance(filename))
@@ -24,7 +25,7 @@ class user_input():
         self.instances[self.curr_instance].set_line_height(self.graphics.line_height)
         interaction_manager.render_page(self.graphics, self.instances[self.curr_instance])
 
-# checks if key input an integer greater than 0 and less than 10
+    # checks if key input an integer greater than 0 and less than 10
     def is_digit(self, k):
         return (len(k) == 1) and (ord(k) >= 49 and ord(k) <= 57)
 
@@ -52,6 +53,14 @@ class user_input():
     def escape(self, event):
         self.curr_state = 'Default'
         self.command_buffer = ''
+    # TODO: THIS LOOKS HACKY
+    def mouse_scroll(self, event):
+        self.curr_state = 'Default'
+        # run up or down command depending on scroll direction
+        if event.num == 5 or event.delta < 0:
+            self.user_key_pressed('j')
+        if event.num == 4 or event.delta > 0:
+            self.user_key_pressed('k')
 
     def user_key_pressed(self, key):
         if self.curr_state == 'Default':

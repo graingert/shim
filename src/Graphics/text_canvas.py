@@ -24,11 +24,15 @@ class text_canvas(Frame):
         self.bind_events(input_handler)
 
     def bind_events(self, input_handler):
+        # TODO: this should be cleaned up ideally into a separate handler list
         input_handler.set_GUI_reference(self)
+        self.canvas.bind('<Key>', input_handler.key)
+        self.canvas.bind_all('<Escape>', input_handler.escape)
+        self.canvas.bind("<Button-4>", input_handler.mouse_scroll)
+        self.canvas.bind("<Button-5>", input_handler.mouse_scroll)
         self.canvas.bind_all('<Control-f>', input_handler.control_f)
         self.canvas.bind_all('<Control-b>', input_handler.control_b)
-        self.canvas.bind_all('<Escape>', input_handler.escape)
-        self.canvas.bind('<Key>', input_handler.key)
+        self.canvas.bind("<MouseWheel>", input_handler.mouse_scroll)
 
     # write line of text at given grid co-ordinates
     def write_text_grid(self, x, y, text, color):
