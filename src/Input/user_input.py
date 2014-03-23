@@ -64,6 +64,7 @@ class user_input():
     def escape(self, event):
         self.curr_state = 'Default'
         self.command_buffer = ''
+        interaction_manager.render_page([], [], self.graphics, self.instances[self.curr_instance], self)
 
     # TODO: THIS LOOKS HACKY
     def mouse_scroll(self, event):

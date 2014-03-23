@@ -1,7 +1,7 @@
 from random import randint, sample, seed
 from optparse import OptionParser
 import os, sys
-# intialize option fields
+#        intialize option fields
 def opt_init(parser):
     parser.add_option('-s', dest='seed',
                       type='int', help='seed value for random number generator')

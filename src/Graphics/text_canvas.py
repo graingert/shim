@@ -55,15 +55,10 @@ class text_canvas(Frame):
     def draw_cursor(self, x, y):
         x_val = self.cwidth * x + self.line_num_spacing
         y_val = self.cheight * y + (y * 2)
+
         self.canvas.create_rectangle(0, y_val, self.winfo_screenwidth(), y_val + self.cheight + 4, fill='#073642', outline='#073642')
         self.canvas.create_rectangle(x_val, 0, x_val + self.cwidth, self.winfo_screenheight(), fill='#073642', outline='#073642')
-
         self.canvas.create_rectangle(x_val, y_val, x_val + self.cwidth, y_val + self.cheight + 4, fill='#7C6B69', outline='#7C6B69')
-
-        width = tkFont.Font(family='Monaco', size=12, weight='bold').measure('%d, %d' % (x, y))
-
-        self.canvas.create_rectangle(self.winfo_screenwidth() - width, 0, self.winfo_screenwidth(), 12, fill='#073642', outline='#073642')
-        self.canvas.create_text(self.winfo_screenwidth() - width, 0, anchor='nw', text='%d, %d' % (x, y), font=tkFont.Font(family='Monaco', size=12, weight='bold'), fill='#839496')
 
     def clear_all(self):
         self.canvas.delete('all')

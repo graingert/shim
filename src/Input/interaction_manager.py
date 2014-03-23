@@ -205,9 +205,17 @@ def quit(graphics_state, local_state, global_state):
     sys.exit(1)
 
 
+
+def write(graphics_state, local_state, global_state):
+    lines = ''.join(local_state.get_lines())
+    with open(local_state.get_filename(), 'w') as f:
+        f.write(lines)
+
+
 COMMAND_MAP = {
-                  'paste': paste,
                   'quit': quit,
+                  'write': write,
+                  'paste': paste,
                   'move_cursor_up': move_up,
                   'insert_text': insert_text,
                   'delete_char': delete_char,

@@ -39,6 +39,10 @@ def quit(s):
     return 'quit'
 
 
+def write(s):
+    return 'write'
+
+
 DEFAULT_COMMAND_MAP = {
                           re.compile('[0-9]*gg'): goto_line_num,
                           re.compile('f.'): seek_char,
@@ -69,10 +73,11 @@ def visual_parse(s):
 
 
 EX_COMMAND_MAP = {
-                     re.compile(':q'): quit
+                     re.compile('q'): quit,
+                     re.compile('w'): write
                  }
 
-
+# TODO:this won't work for actual commands because of the overlap. Figure out a smarter way to do this please
 def ex_parse(s):
     print s
     for r, func in EX_COMMAND_MAP.items():

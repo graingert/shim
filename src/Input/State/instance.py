@@ -2,6 +2,7 @@ from copy import deepcopy
 
 class instance():
     def __init__(self, filename):
+        self.filename = filename
         self.lines = [line for line in open(filename, 'r')]
         self.cursor_x, self.cursor_y, self.curr_top = 0, 0, 0
         self.visual_x, self.visual_y, self.visual_curr_top = 0, 0, 0
@@ -25,11 +26,14 @@ class instance():
     def get_line_num(self):
         return len(self.lines)
 
-    def get_visual_anchors(self):
-        return self.visual_x, self.visual_y, self.visual_curr_top
+    def get_filename(self):
+        return self.filename
 
     def get_page_state(self):
         return self.cursor_x, self.cursor_y, self.curr_top
+
+    def get_visual_anchors(self):
+        return self.visual_x, self.visual_y, self.visual_curr_top
 
     def add_line(self, index, line):
         self.lines.insert(index, line)
