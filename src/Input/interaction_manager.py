@@ -20,6 +20,8 @@ def render_default_graphics(graphics_state, local_state, global_state):
         except IndexError:
             break
 
+    graphics_state.write_status_line('wtf')
+
 
 def render_page(pre, post, graphics_state, local_state, global_state):
     graphics_state.clear_all()
