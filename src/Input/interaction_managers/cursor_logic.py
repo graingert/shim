@@ -19,8 +19,8 @@ def move_cursor_past_end_line(local_state):
 def move_cursor_end_file(local_state):
     x, y = local_state.get_cursor()
     curr_top = local_state.get_curr_top()
-    local_state.set_curr_top(max(0, local_state.get_line_num() - local_state.get_line_height() - 2))
-    local_state.set_cursor(0, min(local_state.get_line_num() -2, local_state.get_line_height()))
+    local_state.set_curr_top(max(0, local_state.get_line_num() - local_state.get_line_height() - 1))
+    local_state.set_cursor(0, min(local_state.get_line_num() -1, local_state.get_line_height()))
 
 
 def move_cursor_begin_file(local_state):
@@ -40,12 +40,12 @@ def move_cursor_line_num(n, local_state):
     per_page = local_state.get_line_height()
     if n > (total - per_page):
         if total < per_page:
-            local_state.set_cursor(0, min(local_state.get_line_num() - 2, n - 1))
+            local_state.set_cursor(0, min(local_state.get_line_num() - 1, n - 1))
         else:
-            local_state.set_cursor(0, min(local_state.get_line_num() - 2, per_page - (total - n - 1)))
+            local_state.set_cursor(0, min(local_state.get_line_num() - 1, per_page - (total - n - 1)))
             local_state.set_curr_top(max(0, total - per_page - 2))
     else:
-        local_state.set_curr_top(max(0, min(n - 1, local_state.get_line_num() - 2)))
+        local_state.set_curr_top(max(0, min(n - 1, local_state.get_line_num() - 1)))
         local_state.set_cursor(0, 0)
 
 
@@ -98,8 +98,8 @@ def move_cursor_next_paragraph(local_state):
         elif l != '':
             accept_all = True
 
-    local_state.set_curr_top(max(0, local_state.get_line_num() - local_state.get_line_height() - 2))
-    local_state.set_cursor(0,  min(local_state.get_line_num() - 2, local_state.get_line_height()))
+    local_state.set_curr_top(max(0, local_state.get_line_num() - local_state.get_line_height() - 1))
+    local_state.set_cursor(0,  min(local_state.get_line_num() - 1, local_state.get_line_height()))
 
 
 def move_cursor_prev_paragraph(local_state):
@@ -129,7 +129,7 @@ def move_cursor_down(local_state):
     except IndexError:
          pass
     # if curr line + 1 is < total line numbers then move cursor down
-    if (curr_top + y + 1) < local_state.get_line_num() - 1:
+    if (curr_top + y + 1) < local_state.get_line_num():
         local_state.set_cursor(x, y + 1)
 
 
@@ -145,7 +145,7 @@ def move_cursor_next_word_front(local_state):
         elif char == ' ':
             accept_all = True
 
-    for offset, line_num in enumerate(range(y + curr_top + 1, local_state.get_line_num() - 1)):
+    for offset, line_num in enumerate(range(y + curr_top + 1, local_state.get_line_num())):
         l = local_state.get_line(line_num)
         for index, char in enumerate(l):
             if char != ' ':
@@ -182,7 +182,7 @@ def move_cursor_next_word_end(local_state):
         if (curr_str[dx] == ' ' and curr_str[dx - 1] != ' ') or (curr_str[dx] in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):
             return local_state.set_cursor(dx - 1, y)
 
-    for dy, line_num in enumerate(range(y + curr_top + 1, local_state.get_line_num() - 1)):
+    for dy, line_num in enumerate(range(y + curr_top + 1, local_state.get_line_num())):
         curr_str = local_state.get_line(line_num)
         for dx in range(len(curr_str)):
             if (curr_str[dx] == ' ' and curr_str[dx - 1] != ' ') or (curr_str[dx] in ["'", '[', ']', '(', ')', '-', '+', '{', '}']):

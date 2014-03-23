@@ -39,6 +39,12 @@ class text_canvas(Frame):
         y_val = self.cheight * y + (y * 2)
         #'#839496'
         self.canvas.create_text(x_val, y_val, anchor='nw', text=text, font=self.text_font, fill=color)
+    # TODO: REMOVE HARDCODED COLORS
+    def draw_highlight_grid(self, y, x1, x2):
+        y_val = self.cheight * y + (y * 2)
+        x1_val = self.cwidth * x1 + self.line_num_spacing
+        x2_val = self.cwidth * x2 + self.line_num_spacing
+        self.canvas.create_rectangle(x1_val, y_val, x2_val, y_val + self.cheight + 4, fill='#657b83', outline='#657b83')
 
     def draw_line_numbers(self, start):
         self.canvas.create_rectangle(0, 0, self.line_num_spacing / 2, self.winfo_screenheight(), fill='#073642', outline='#073642')
