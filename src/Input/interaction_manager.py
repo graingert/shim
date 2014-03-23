@@ -1,7 +1,9 @@
-from interaction_managers import cursor_logic, text_logic
+from interaction_managers import cursor_logic, text_logic, graphics_logic
+
 # routes keyboard input to appropriate interaction manager to mutate instance state, page is then re-rendered given new state
 # events are fed directly from user_input
 # interaction manager should not have to parse user input keys directly
+
 def render_default_graphics(graphics_state, local_state, global_state):
     lines = local_state.get_lines()
     x, y = local_state.get_cursor()
@@ -23,10 +25,10 @@ def render_default_graphics(graphics_state, local_state, global_state):
 def render_page(pre, post, graphics_state, local_state, global_state):
     graphics_state.clear_all()
     for func in pre:
-        func(graphics_state, local_state, global_state)
+        func()
     render_default_graphics(graphics_state, local_state, global_state)
     for func in post:
-        func(graphics_state, local_state, global_state)
+        func()
 
 
 def move_left(graphics_state, local_state, global_state):
@@ -167,10 +169,8 @@ def mouse_scroll(delta, graphics_state, local_state, global_state):
 
 
 def visual_movement(motion, graphics_state, local_state, global_state):
-    px, py, pt = local_state.get_visual_anchors()
     COMMAND_MAP[motion](graphics_state, local_state, global_state)
-    nt = local_state.get_curr_top()
-    nx, ny = local_state.get_cursor()
+    render_page([], [lambda: graphics_logic.highlight_visual_mode(graphics_state, local_state)], graphics_state, local_state, global_state)
 
 
 COMMAND_MAP = {

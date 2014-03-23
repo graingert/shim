@@ -1,30 +1,26 @@
 import cursor_logic
 
 def insert_text_str(s, local_state):
-    curr_top = local_state.get_curr_top()
-    x, y = local_state.get_cursor()
+    x, y, curr_top = local_state.get_page_state()
     curr_line = local_state.get_line(curr_top + y)
     local_state.set_line(curr_top + y, curr_line[:x] + s + curr_line[x:])
     local_state.set_cursor(x + len(s), y)
 
 
 def delete_text_highlight(local_state):
-    curr_top = local_state.get_curr_top()
-    x, y = local_state.get_cursor()
+    x, y, curr_top = local_state.get_page_state()
     curr_line = local_state.get_line(curr_top + y)
     local_state.set_line(curr_top + y, curr_line[:x] + curr_line[x + 1:])
 
 
 def delete_current_line(local_state):
-    curr_top = local_state.get_curr_top()
-    x, y = local_state.get_cursor()
+    x, y, curr_top = local_state.get_page_state()
     local_state.remove_line(curr_top + y)
     local_state.set_cursor(0, y)
 
 
 def insert_new_line_below(local_state):
-    curr_top = local_state.get_curr_top()
-    x, y = local_state.get_cursor()
+    x, y, curr_top = local_state.get_page_state()
     curr_line = local_state.get_line(curr_top + y)
 
     new_line = (' ' * (len(curr_line) - len(curr_line.lstrip()))) + '\n'
@@ -33,8 +29,7 @@ def insert_new_line_below(local_state):
 
 
 def insert_new_line_above(local_state):
-    curr_top = local_state.get_curr_top()
-    x, y = local_state.get_cursor()
+    x, y, curr_top = local_state.get_page_state()
     curr_line = local_state.get_line(curr_top + y)
 
     new_line = (' ' * (len(curr_line) - len(curr_line.lstrip()))) + '\n'
@@ -43,8 +38,7 @@ def insert_new_line_above(local_state):
 
 
 def delete_text_char(local_state):
-    curr_top = local_state.get_curr_top()
-    x, y = local_state.get_cursor()
+    x, y, curr_top = local_state.get_page_state()
     curr_line = local_state.get_line(y + curr_top)
 
     if x > 0:
@@ -95,8 +89,7 @@ def delete_text_range(px, py, pt, nx, ny, nt, local_state):
 
 
 def add_new_line_char(local_state):
-    curr_top = local_state.get_curr_top()
-    x, y = local_state.get_cursor()
+    x, y, curr_top = local_state.get_page_state()
     curr_line = local_state.get_line(y + curr_top)
 
     #  this should be safe I think, no need to perform new line check because python string splicing doesn't toss index exceptions if curr_line[x] != '\n':
