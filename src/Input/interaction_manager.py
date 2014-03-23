@@ -182,6 +182,11 @@ def paste(graphics_state, local_state, global_state):
     text_logic.insert_text_strs(local_state, global_state)
     render_page([], [], graphics_state, local_state, global_state)
 
+
+def yank_curr_line(graphics_state, local_state, global_state):
+    x, y, curr_top = local_state.get_page_state()
+    global_state.add_copy_buffer([local_state.get_line(curr_top + y)])
+
 COMMAND_MAP = {
                   'paste': paste,
                   'move_cursor_up': move_up,
@@ -192,6 +197,7 @@ COMMAND_MAP = {
                   'move_cursor_left': move_left,
                   'move_cursor_down': move_down,
                   'move_cursor_right': move_right,
+                  'yank_curr_line': yank_curr_line,
                   'visual_movement': visual_movement,
                   'delete_curr_line': delete_curr_line,
                   'move_cursor_end_line': move_end_line,

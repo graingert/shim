@@ -31,12 +31,17 @@ def delete_curr_line(s):
         return 'delete_curr_line'
 
 
+def yank_curr_line(s):
+    return 'yank_curr_line'
+
+
 DEFAULT_COMMAND_MAP = {
                           re.compile('[0-9]*gg'): goto_line_num,
                           re.compile('f.'): seek_char,
                           re.compile('[0-9]+[h|j|k|l|\{|\}]'): repeat_default_movement,
                           re.compile('d[h|j|k|l|{|}|w|b|e]'): delete_text_movement,
-                          re.compile('[0-9]*dd'): delete_curr_line
+                          re.compile('[0-9]*dd'): delete_curr_line,
+                          re.compile('yy'): yank_curr_line
                       }
 
 

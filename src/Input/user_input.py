@@ -85,7 +85,7 @@ class user_input():
     # TODO: CLEAN UP THIS MESS
     def user_key_default(self, key):
         # To be buffered
-        if key in ['g', 'f', 'd'] or self.is_digit(key) or len(self.command_buffer):
+        if key in ['g', 'f', 'd', 'y'] or self.is_digit(key) or len(self.command_buffer):
             self.command_buffer += key
             s_par = command_parser.default_parse(self.command_buffer)
 

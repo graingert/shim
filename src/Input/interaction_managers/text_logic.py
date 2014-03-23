@@ -14,7 +14,6 @@ def insert_text_strs(local_state, global_state):
 
     curr_line = local_state.get_line(curr_top + y)
     local_state.set_line(curr_top + y, curr_line[:x] + paste_txt[0].strip('\n') + curr_line[x:])
-
     for i in range(len(paste_txt) - 1):
         local_state.add_line(curr_top + y + i + 1, paste_txt[i + 1])
 
