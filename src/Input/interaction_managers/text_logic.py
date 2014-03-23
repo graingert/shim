@@ -93,6 +93,8 @@ def get_text_range(px, py, pt, nx, ny, nt, local_state):
     fx, fy = ((px, py), (nx, ny))[(ny + nt) < (py + pt)]
 
     if py + pt == ny + nt:
+        start, end = ((px, nx), (nx, px))[nx < px]
+        curr_line = local_state.get_line(py + pt)
         txt.append(curr_line[:start] + curr_line[end:])
     else:
         start, end = ((py + pt, ny + nt), (ny + nt, py + pt))[(ny + nt) < (py + pt)]

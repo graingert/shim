@@ -133,10 +133,13 @@ def delete_text_highlight(graphics_state, local_state, global_state):
         nx, ny, nt = local_state.get_page_state()
         global_state.add_copy_buffer(text_logic.get_text_range(px, py, pt, nx, ny, nt, local_state))
         text_logic.delete_text_range(px, py, pt, nx, ny, nt, local_state)
+        # this makes sense to be set here i think
+        global_state.curr_state = 'Default'
     else:
         text_logic.delete_text_highlight(local_state)
 
     render_page([], [], graphics_state, local_state, global_state)
+
 
 def delete_curr_line(graphics_state, local_state, global_state):
     text_logic.delete_current_line(local_state)

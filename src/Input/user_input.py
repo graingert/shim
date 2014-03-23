@@ -3,6 +3,7 @@ from State import instance
 import re
 
 DEFAULT_MOVEMENTS = command_list.DEFAULT_MOVEMENTS
+VISUAL_MOVEMENTS = command_list.VISUAL_MOVEMENTS
 BREAK_MOVEMENTS = command_list.BREAK_MOVEMENTS
 COMMAND_MAP = command_list.COMMAND_MAP
 
@@ -30,7 +31,6 @@ class user_input():
         return self.instances[self.curr_instance]
 
     def add_copy_buffer(self, l):
-        print l
         self.copy_buffer.append(l)
 
     # checks if key input an integer greater than 0 and less than 10
@@ -119,8 +119,8 @@ class user_input():
             interaction_manager.input_command('add_new_line', self.graphics, self.get_curr_instance(), self)
 
     def user_key_visual(self, key):
-        if DEFAULT_MOVEMENTS.has_key(key):
-            motion = DEFAULT_MOVEMENTS[key]
+        if VISUAL_MOVEMENTS.has_key(key):
+            motion = VISUAL_MOVEMENTS[key]
             cmd = 's' + motion + ':visual_movement'
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
             self.command_buffer = ''
