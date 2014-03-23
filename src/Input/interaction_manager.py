@@ -175,7 +175,9 @@ def mouse_scroll(delta, graphics_state, local_state, global_state):
 
 def visual_movement(motion, graphics_state, local_state, global_state):
     COMMAND_MAP[motion](graphics_state, local_state, global_state)
-    render_page([], [lambda: graphics_logic.highlight_visual_mode(graphics_state, local_state)], graphics_state, local_state, global_state)
+    # some commands break out of visual mode
+    if global_state.curr_state == 'Visual':
+        render_page([], [lambda: graphics_logic.highlight_visual_mode(graphics_state, local_state)], graphics_state, local_state, global_state)
 
 
 def paste(graphics_state, local_state, global_state):
@@ -191,6 +193,7 @@ def yank_curr_line(graphics_state, local_state, global_state):
 def shift_selection_right(graphics_state, local_state, global_state):
     text_logic.shift_selection_right(local_state)
     render_page([], [], graphics_state, local_state, global_state)
+
 
 def shift_selection_left(graphics_state, local_state, global_state):
     text_logic.shift_selection_left(local_state)

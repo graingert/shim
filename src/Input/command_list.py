@@ -56,7 +56,6 @@ DEFAULT_MOVEMENTS = {
 
 VISUAL_MOVEMENTS = {
                         'k': 'move_cursor_up',
-                        'k': 'move_cursor_up',
                         'h': 'move_cursor_left',
                         'j': 'move_cursor_down',
                         'l': 'move_cursor_right',
