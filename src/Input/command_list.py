@@ -56,11 +56,14 @@ DEFAULT_MOVEMENTS = {
 
 VISUAL_MOVEMENTS = {
                         'k': 'move_cursor_up',
+                        'k': 'move_cursor_up',
                         'h': 'move_cursor_left',
                         'j': 'move_cursor_down',
                         'l': 'move_cursor_right',
+                        '<': 'shift_selection_left',
                         'G': 'move_cursor_end_file',
                         '$': 'move_cursor_end_line',
+                        '>': 'shift_selection_right',
                         'x': 'delete_text_highlight',
                         'gg': 'move_cursor_begin_file',
                         'e': 'move_cursor_next_word_end',

@@ -47,6 +47,26 @@ def insert_new_line_above(local_state):
     local_state.add_line(y + curr_top, new_line)
     local_state.set_cursor(len(curr_line) - len(curr_line.lstrip()), y)
 
+# TODO: LOOK AT THE MAGIC NUMBERS HERE
+def shift_selection_right(local_state):
+    px, py, pt = local_state.get_visual_anchors()
+    nx, ny, nt = local_state.get_page_state()
+
+    start, end = ((py + pt, ny + nt), (ny + nt, py + pt))[(ny + nt) < (py + pt)]
+    for n in range(start, end + 1):
+        l = local_state.get_line(n)
+        local_state.set_line(n, ' ' * 4 + l)
+
+
+def shift_selection_left(local_state):
+    px, py, pt = local_state.get_visual_anchors()
+    nx, ny, nt = local_state.get_page_state()
+
+    start, end = ((py + pt, ny + nt), (ny + nt, py + pt))[(ny + nt) < (py + pt)]
+    for n in range(start, end + 1):
+        l = local_state.get_line(n)
+        local_state.set_line(n, l[:4].strip() + l[4:])
+
 
 def delete_text_char(local_state):
     x, y, curr_top = local_state.get_page_state()

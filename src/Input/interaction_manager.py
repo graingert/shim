@@ -187,6 +187,16 @@ def yank_curr_line(graphics_state, local_state, global_state):
     x, y, curr_top = local_state.get_page_state()
     global_state.add_copy_buffer([local_state.get_line(curr_top + y)])
 
+
+def shift_selection_right(graphics_state, local_state, global_state):
+    text_logic.shift_selection_right(local_state)
+    render_page([], [], graphics_state, local_state, global_state)
+
+def shift_selection_left(graphics_state, local_state, global_state):
+    text_logic.shift_selection_left(local_state)
+    render_page([], [], graphics_state, local_state, global_state)
+
+
 COMMAND_MAP = {
                   'paste': paste,
                   'move_cursor_up': move_up,
@@ -206,10 +216,12 @@ COMMAND_MAP = {
                   'move_cursor_seek_char': move_seek_char,
                   'insert_end_of_line': insert_end_of_line,
                   'move_cursor_begin_file': move_begin_file,
+                  'shift_selection_left': shift_selection_left,
                   'delete_text_movement': delete_text_movement,
                   'insert_new_line_above': insert_new_line_above,
                   'insert_new_line_below': insert_new_line_below,
                   'delete_text_highlight': delete_text_highlight,
+                  'shift_selection_right': shift_selection_right,
                   'move_cursor_next_word_end': move_next_word_end,
                   'move_cursor_next_paragraph': move_next_paragraph,
                   'move_cursor_prev_paragraph': move_prev_paragraph,
