@@ -6,8 +6,7 @@ from interaction_managers import cursor_logic, text_logic, graphics_logic
 
 def render_default_graphics(graphics_state, local_state, global_state):
     lines = local_state.get_lines()
-    x, y = local_state.get_cursor()
-    curr_top = local_state.get_curr_top()
+    x, y, curr_top = local_state.get_page_state()
     buff_line_count = graphics_state.get_line_height()
 
     graphics_state.draw_cursor(x, y)
@@ -120,20 +119,24 @@ def add_new_line(graphics_state, local_state, global_state):
     render_page([], [], graphics_state, local_state, global_state)
 
 def delete_text_movement(movement, graphics_state, local_state, global_state):
-    pt = local_state.get_curr_top()
-    px, py = local_state.get_cursor()
+    px, py, pt = local_state.get_page_state()
     COMMAND_MAP[movement](graphics_state, local_state, global_state)
-    nt = local_state.get_curr_top()
-    nx, ny = local_state.get_cursor()
+    nx, ny, nt = local_state.get_page_state()
 
     text_logic.delete_text_range(px, py, pt, nx, ny, nt, local_state)
     render_page([], [], graphics_state, local_state, global_state)
 
 
 def delete_text_highlight(graphics_state, local_state, global_state):
-    text_logic.delete_text_highlight(local_state)
-    render_page([], [], graphics_state, local_state, global_state)
+    if global_state.curr_state == 'Visual':
+        px, py, pt = local_state.get_visual_anchors()
+        nx, ny, nt = local_state.get_page_state()
+        global_state.add_copy_buffer(text_logic.get_text_range(px, py, pt, nx, ny, nt, local_state))
+        text_logic.delete_text_range(px, py, pt, nx, ny, nt, local_state)
+    else:
+        text_logic.delete_text_highlight(local_state)
 
+    render_page([], [], graphics_state, local_state, global_state)
 
 def delete_curr_line(graphics_state, local_state, global_state):
     text_logic.delete_current_line(local_state)
@@ -159,8 +162,7 @@ def insert_end_of_line(graphics_state, local_state, global_state):
 
 
 def mouse_scroll(delta, graphics_state, local_state, global_state):
-    curr_top = local_state.get_curr_top()
-    x, y = local_state.get_cursor()
+    x, y, curr_top = local_state.get_page_state()
     if y + int(delta) + curr_top <= local_state.get_line_num() - 2:
         local_state.set_cursor(x, y + int(delta))
         render_page([], [], graphics_state, local_state, global_state)

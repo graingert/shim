@@ -16,6 +16,7 @@ class user_input():
         self.curr_instance = 0
         self.instances = []
         self.undo_buffer = []
+        self.copy_buffer = []
 
     def start_instance(self, filename):
         self.instances.append(instance.instance(filename))
@@ -27,6 +28,10 @@ class user_input():
 
     def get_curr_instance(self):
         return self.instances[self.curr_instance]
+
+    def add_copy_buffer(self, l):
+        print l
+        self.copy_buffer.append(l)
 
     # checks if key input an integer greater than 0 and less than 10
     def is_digit(self, k):

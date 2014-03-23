@@ -24,7 +24,5 @@ def highlight_visual_mode(graphics_state, local_state):
         start, end = ((py + pt, ny + nt), (ny + nt, py + pt))[(ny + nt) < (py + pt)]
         for n in range(start - nt + 1, end - nt):
             l = local_state.get_line(n + nt)
-            print l
             graphics_state.draw_highlight_grid(n, 0, len(l) - 1)
             graphics_state.write_text_grid(0, n, l, '#839496')
-

@@ -88,6 +88,30 @@ def delete_text_range(px, py, pt, nx, ny, nt, local_state):
         local_state.set_cursor(fx, fy)
 
 
+def get_text_range(px, py, pt, nx, ny, nt, local_state):
+    txt = []
+    fx, fy = ((px, py), (nx, ny))[(ny + nt) < (py + pt)]
+
+    if py + pt == ny + nt:
+        txt.append(curr_line[:start] + curr_line[end:])
+    else:
+        start, end = ((py + pt, ny + nt), (ny + nt, py + pt))[(ny + nt) < (py + pt)]
+        count = 0
+        for n in range(start, end + 1):
+            if (n == py + pt) and (px, py) == (fx, fy):
+                txt.append(local_state.get_line(n)[:px])
+            elif (n  == py + pt) and (px, py) != (fx, fy):
+                txt.append(local_state.get_line(n)[px:])
+            elif (n == ny + nt) and (nx, ny) == (fx, fy):
+                txt.append(local_state.get_line(n)[:nx])
+            elif (n == ny + nt) and (nx, ny) != (fx, fy):
+                txt.append(local_state.get_line(n)[nx:])
+            else:
+                txt.append(local_state.get_line(n))
+    return txt
+
+
+
 def add_new_line_char(local_state):
     x, y, curr_top = local_state.get_page_state()
     curr_line = local_state.get_line(y + curr_top)
