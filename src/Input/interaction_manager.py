@@ -178,7 +178,12 @@ def visual_movement(motion, graphics_state, local_state, global_state):
     render_page([], [lambda: graphics_logic.highlight_visual_mode(graphics_state, local_state)], graphics_state, local_state, global_state)
 
 
+def paste(graphics_state, local_state, global_state):
+    text_logic.insert_text_strs(local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
+
 COMMAND_MAP = {
+                  'paste': paste,
                   'move_cursor_up': move_up,
                   'insert_text': insert_text,
                   'delete_char': delete_char,

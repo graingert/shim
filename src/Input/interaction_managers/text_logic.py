@@ -1,10 +1,22 @@
 import cursor_logic
 
+
 def insert_text_str(s, local_state):
     x, y, curr_top = local_state.get_page_state()
     curr_line = local_state.get_line(curr_top + y)
     local_state.set_line(curr_top + y, curr_line[:x] + s + curr_line[x:])
     local_state.set_cursor(x + len(s), y)
+
+
+def insert_text_strs(local_state, global_state):
+    x, y, curr_top = local_state.get_page_state()
+    paste_txt = global_state.get_copy_buffer()
+
+    curr_line = local_state.get_line(curr_top + y)
+    local_state.set_line(curr_top + y, curr_line[:x] + paste_txt[0].strip('\n') + curr_line[x:])
+
+    for i in range(len(paste_txt) - 1):
+        local_state.add_line(curr_top + y + i + 1, paste_txt[i + 1])
 
 
 def delete_text_highlight(local_state):

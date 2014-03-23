@@ -31,7 +31,10 @@ class user_input():
         return self.instances[self.curr_instance]
 
     def add_copy_buffer(self, l):
-        self.copy_buffer.append(l)
+        self.copy_buffer = l
+
+    def get_copy_buffer(self):
+        return self.copy_buffer
 
     # checks if key input an integer greater than 0 and less than 10
     def is_digit(self, k):
