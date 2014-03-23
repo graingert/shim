@@ -81,6 +81,8 @@ class user_input():
             self.user_key_insert(key)
         elif self.curr_state == 'Visual':
             self.user_key_visual(key)
+        elif self.curr_state == 'Ex':
+            self.user_key_ex(key)
 
     # TODO: CLEAN UP THIS MESS
     def user_key_default(self, key):
@@ -100,6 +102,7 @@ class user_input():
         elif DEFAULT_MOVEMENTS.has_key(key):
             interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.get_curr_instance(), self)
             self.command_buffer = ''
+
         # this could be a dict, or it could be a bunch of if elses. If elses are slightly more intuitive than the other.
         elif key == 'i':
             self.curr_state = 'Insert'
@@ -108,6 +111,8 @@ class user_input():
             # set once and then never mutate this ever again per visual selection
             self.get_curr_instance().set_visual_anchor()
             self.curr_state = 'Visual'
+        elif key == ':':
+            self.curr_state = 'Ex'
 
     # this should be the only state that doesn't change no matter the configuration
     def user_key_insert(self, key):
@@ -127,3 +132,15 @@ class user_input():
             cmd = 's' + motion + ':visual_movement'
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
             self.command_buffer = ''
+
+    def user_key_ex(self, key):
+        if key == 'Return':
+            cmd = command_parser.ex_parse(self.command_buffer)
+            interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
+            self.curr_state = 'Default'
+            self.command_buffer = ''
+        elif key == 'BackSpace':
+            self.command_buffer = self.command_buffer[:-1]
+        else:
+            self.command_buffer += key
+

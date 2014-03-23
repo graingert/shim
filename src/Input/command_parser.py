@@ -35,6 +35,10 @@ def yank_curr_line(s):
     return 'yank_curr_line'
 
 
+def quit(s):
+    return 'quit'
+
+
 DEFAULT_COMMAND_MAP = {
                           re.compile('[0-9]*gg'): goto_line_num,
                           re.compile('f.'): seek_char,
@@ -62,3 +66,19 @@ def visual_parse(s):
         if bool(s_par):
             return func(s_par.group())
     return ''
+
+
+EX_COMMAND_MAP = {
+                     re.compile(':q'): quit
+                 }
+
+
+def ex_parse(s):
+    print s
+    for r, func in EX_COMMAND_MAP.items():
+        s_par = r.search(s)
+        if bool(s_par):
+            return func(s_par.group())
+    return ''
+
+

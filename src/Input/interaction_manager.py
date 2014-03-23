@@ -200,8 +200,14 @@ def shift_selection_left(graphics_state, local_state, global_state):
     render_page([], [], graphics_state, local_state, global_state)
 
 
+def quit(graphics_state, local_state, global_state):
+    import sys
+    sys.exit(1)
+
+
 COMMAND_MAP = {
                   'paste': paste,
+                  'quit': quit,
                   'move_cursor_up': move_up,
                   'insert_text': insert_text,
                   'delete_char': delete_char,
