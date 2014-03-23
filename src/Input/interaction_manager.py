@@ -2,174 +2,175 @@ from interaction_managers import cursor_logic, text_logic
 # routes keyboard input to appropriate interaction manager to mutate instance state, page is then re-rendered given new state
 # events are fed directly from user_input
 # interaction manager should not have to parse user input keys directly
-def render_default_graphics(gui_reference, local_state, global_state):
+def render_default_graphics(graphics_state, local_state, global_state):
     lines = local_state.get_lines()
     x, y = local_state.get_cursor()
     curr_top = local_state.get_curr_top()
-    buff_line_count = gui_reference.get_line_height()
+    buff_line_count = graphics_state.get_line_height()
 
-    gui_reference.draw_cursor(x, y)
+    graphics_state.draw_cursor(x, y)
     # top is zero indexed and line numbers are one indexed
-    gui_reference.draw_line_numbers(curr_top + 1)
+    graphics_state.draw_line_numbers(curr_top + 1)
 
     for i in range(buff_line_count + 1):
         # Might have index errors. catch them and move on with life for now
         try:
-            gui_reference.write_text_grid(0, i, lines[curr_top + i], '#839496')
+            graphics_state.write_text_grid(0, i, lines[curr_top + i], '#839496')
         except IndexError:
             break
 
 
-def render_page(pre, post, gui_reference, local_state, global_state):
-    gui_reference.clear_all()
+def render_page(pre, post, graphics_state, local_state, global_state):
+    graphics_state.clear_all()
     for func in pre:
-        func(gui_reference, local_state, global_state)
-    render_default_graphics(gui_reference, local_state, global_state)
+        func(graphics_state, local_state, global_state)
+    render_default_graphics(graphics_state, local_state, global_state)
     for func in post:
-        func(gui_reference, local_state, global_state)
+        func(graphics_state, local_state, global_state)
 
 
-def move_left(gui_reference, local_state, global_state):
+def move_left(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_left(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_right(gui_reference, local_state, global_state):
+def move_right(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_right(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_down(gui_reference, local_state, global_state):
+def move_down(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_down(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_up(gui_reference, local_state, global_state):
+def move_up(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_up(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_beginning_line(gui_reference, local_state, global_state):
+def move_beginning_line(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_beginning_line(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_end_line(gui_reference, local_state, global_state):
+def move_end_line(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_end_line(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_next_word_front(gui_reference, local_state, global_state):
+def move_next_word_front(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_next_word_front(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_next_word_end(gui_reference, local_state, global_state):
+def move_next_word_end(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_next_word_end(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
-def move_prev_word_front(gui_reference, local_state, global_state):
+def move_prev_word_front(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_move_prev_word_front(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_end_file(gui_reference, local_state, global_state):
+def move_end_file(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_end_file(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_begin_file(gui_reference, local_state, global_state):
+def move_begin_file(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_begin_file(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_next_paragraph(gui_reference, local_state, global_state):
+def move_next_paragraph(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_next_paragraph(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_prev_paragraph(gui_reference, local_state, global_state):
+def move_prev_paragraph(graphics_state, local_state, global_state):
     cursor_logic.move_cursor_prev_paragraph(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_line_num(n_arg, gui_reference, local_state, global_state):
+def move_line_num(n_arg, graphics_state, local_state, global_state):
     cursor_logic.move_cursor_line_num(n_arg, local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def move_seek_char(c_arg, gui_reference, local_state, global_state):
+def move_seek_char(c_arg, graphics_state, local_state, global_state):
     cursor_logic.move_cursor_seek_char(c_arg, local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def insert_text(s_arg, gui_reference, local_state, global_state):
+def insert_text(s_arg, graphics_state, local_state, global_state):
     text_logic.insert_text_str(s_arg, local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def delete_char(gui_reference, local_state, global_state):
+def delete_char(graphics_state, local_state, global_state):
     text_logic.delete_text_char(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def add_new_line(gui_reference, local_state, global_state):
+def add_new_line(graphics_state, local_state, global_state):
     text_logic.add_new_line_char(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
-def delete_text_movement(movement, gui_reference, local_state, global_state):
+def delete_text_movement(movement, graphics_state, local_state, global_state):
     pt = local_state.get_curr_top()
     px, py = local_state.get_cursor()
-    COMMAND_MAP[movement](gui_reference, local_state, global_state)
+    COMMAND_MAP[movement](graphics_state, local_state, global_state)
     nt = local_state.get_curr_top()
     nx, ny = local_state.get_cursor()
 
     text_logic.delete_text_range(px, py, pt, nx, ny, nt, local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def delete_text_highlight(gui_reference, local_state, global_state):
+def delete_text_highlight(graphics_state, local_state, global_state):
     text_logic.delete_text_highlight(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def delete_curr_line(gui_reference, local_state, global_state):
+def delete_curr_line(graphics_state, local_state, global_state):
     text_logic.delete_current_line(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def insert_new_line_above(gui_reference, local_state, global_state):
+def insert_new_line_above(graphics_state, local_state, global_state):
     global_state.curr_state = 'Insert'
     text_logic.insert_new_line_above(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def insert_new_line_below(gui_reference, local_state, global_state):
+def insert_new_line_below(graphics_state, local_state, global_state):
     global_state.curr_state = 'Insert'
     text_logic.insert_new_line_below(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def insert_end_of_line(gui_reference, local_state, global_state):
+def insert_end_of_line(graphics_state, local_state, global_state):
     global_state.curr_state = 'Insert'
     cursor_logic.move_cursor_past_end_line(local_state)
-    render_page([], [], gui_reference, local_state, global_state)
+    render_page([], [], graphics_state, local_state, global_state)
 
 
-def mouse_scroll(delta, gui_reference, local_state, global_state):
+def mouse_scroll(delta, graphics_state, local_state, global_state):
     curr_top = local_state.get_curr_top()
     x, y = local_state.get_cursor()
     if y + int(delta) + curr_top <= local_state.get_line_num() - 2:
         local_state.set_cursor(x, y + int(delta))
-        render_page([], [], gui_reference, local_state, global_state)
+        render_page([], [], graphics_state, local_state, global_state)
     else:
-        move_end_file(gui_reference, local_state, global_state)
+        move_end_file(graphics_state, local_state, global_state)
 
 
-def visual_movement(motion, gui_reference, local_state, global_state):
+def visual_movement(motion, graphics_state, local_state, global_state):
     px, py, pt = local_state.get_visual_anchors()
-    print px, py, pt
-    COMMAND_MAP[motion](gui_reference, local_state, global_state)
+    COMMAND_MAP[motion](graphics_state, local_state, global_state)
+    nt = local_state.get_curr_top()
+    nx, ny = local_state.get_cursor()
 
 
 COMMAND_MAP = {
@@ -202,32 +203,32 @@ COMMAND_MAP = {
               }
 
 
-def input_command(command, gui_reference, local_state, global_state):
+def input_command(command, graphics_state, local_state, global_state):
     commands = command.split(':')
     if len(commands) == 1:
-        COMMAND_MAP[command](gui_reference, local_state, global_state)
+        COMMAND_MAP[command](graphics_state, local_state, global_state)
         # try:
-        #     COMMAND_MAP[command](gui_reference, instance)
+        #     COMMAND_MAP[command](graphics_state, instance)
         # except:
         #     pass
     else:
-        input_command_arg(commands, gui_reference, local_state, global_state)
+        input_command_arg(commands, graphics_state, local_state, global_state)
 
 
 # c denotes character arguments i.e fa maps to find a
 # n denotes numerical arguments i.e 123gg maps to jump to line 123
 # r denotes repeat arguments i.e 3j means run the 'j' command 3 times
 # s denotes character arguments i.e text insert
-def input_command_arg(commands, gui_reference, local_state, global_state):
+def input_command_arg(commands, graphics_state, local_state, global_state):
     opt_arg = commands[0][1:]
     in_arg = commands[1]
     if commands[0].startswith('n'):
-        COMMAND_MAP[in_arg](int(opt_arg), gui_reference, local_state, global_state)
+        COMMAND_MAP[in_arg](int(opt_arg), graphics_state, local_state, global_state)
     elif commands[0].startswith('r'):
         for i in range(int(opt_arg)):
-            COMMAND_MAP[in_arg](gui_reference, local_state, global_state)
+            COMMAND_MAP[in_arg](graphics_state, local_state, global_state)
     elif commands[0].startswith('c'):
         # This should be a single character argument anyway
-        COMMAND_MAP[in_arg](opt_arg, gui_reference, local_state, global_state)
+        COMMAND_MAP[in_arg](opt_arg, graphics_state, local_state, global_state)
     elif commands[0].startswith('s'):
-        COMMAND_MAP[in_arg](opt_arg, gui_reference, local_state, global_state)
+        COMMAND_MAP[in_arg](opt_arg, graphics_state, local_state, global_state)
