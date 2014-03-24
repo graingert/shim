@@ -5,7 +5,7 @@ from interaction_managers import cursor_logic, text_logic, graphics_logic
 # interaction manager should not have to parse user input keys directly
 
 def render_default_graphics(graphics_state, local_state, global_state):
-    lines = local_state.get_lines()
+    lines = local_state.get_line_tokens()
     x, y, curr_top = local_state.get_page_state()
     buff_line_count = graphics_state.get_line_height()
 
@@ -16,11 +16,9 @@ def render_default_graphics(graphics_state, local_state, global_state):
     for i in range(buff_line_count + 1):
         # Might have index errors. catch them and move on with life for now
         try:
-            graphics_state.write_text_grid(0, i, lines[curr_top + i], '#839496')
+            graphics_state.write_line_grid(i, lines[curr_top + i])
         except IndexError:
             break
-
-    graphics_state.write_status_line('wtf')
 
 
 def render_page(pre, post, graphics_state, local_state, global_state):

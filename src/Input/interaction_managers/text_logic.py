@@ -126,7 +126,7 @@ def get_text_range(px, py, pt, nx, ny, nt, local_state):
     if py + pt == ny + nt:
         start, end = ((px, nx), (nx, px))[nx < px]
         curr_line = local_state.get_line(py + pt)
-        txt.append(curr_line[:start] + curr_line[end:])
+        txt.append(curr_line[start:end + 1])
     else:
         start, end = ((py + pt, ny + nt), (ny + nt, py + pt))[(ny + nt) < (py + pt)]
         count = 0
