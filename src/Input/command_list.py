@@ -35,6 +35,7 @@ COMMAND_MAP = {
 
 DEFAULT_MOVEMENTS = {
                         'p': 'paste',
+                        'u': 'undo_command',
                         'k': 'move_cursor_up',
                         'h': 'move_cursor_left',
                         'j': 'move_cursor_down',

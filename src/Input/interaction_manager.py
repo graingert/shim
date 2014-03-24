@@ -129,6 +129,7 @@ def delete_text_movement(movement, graphics_state, local_state, global_state):
 
 def delete_text_highlight(graphics_state, local_state, global_state):
     if global_state.curr_state == 'Visual':
+        global_state.add_undo_buffer()
         px, py, pt = local_state.get_visual_anchors()
         nx, ny, nt = local_state.get_page_state()
         global_state.add_copy_buffer(text_logic.get_text_range(px, py, pt, nx, ny, nt, local_state))
@@ -205,11 +206,18 @@ def quit(graphics_state, local_state, global_state):
     sys.exit(1)
 
 
-
 def write(graphics_state, local_state, global_state):
     lines = ''.join(local_state.get_lines())
     with open(local_state.get_filename(), 'w') as f:
         f.write(lines)
+
+
+def undo_command(graphics_state, local_state, global_state):
+    prev = global_state.get_undo_state()
+    if prev != None:
+        print 1
+        local_state.mutate_state(prev['x'], prev['y'], prev['curr_top'], prev['lines'], prev['line_tokens'])
+        render_page([], [], graphics_state, local_state, global_state)
 
 
 COMMAND_MAP = {
@@ -219,6 +227,7 @@ COMMAND_MAP = {
                   'move_cursor_up': move_up,
                   'insert_text': insert_text,
                   'delete_char': delete_char,
+                  'undo_command': undo_command,
                   'mouse_scroll': mouse_scroll,
                   'add_new_line': add_new_line,
                   'move_cursor_left': move_left,

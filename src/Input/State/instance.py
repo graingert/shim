@@ -1,6 +1,7 @@
 from copy import deepcopy
 from SyntaxTokens import syntax_parser
 
+# it should be kind of obvious what class is supposed to do.....
 class instance():
     def __init__(self, filename):
         self.filename = filename
@@ -73,4 +74,8 @@ class instance():
         else:
             self.cursor_y = y
 
-
+    def mutate_state(self, x, y, curr_top, lines, line_tokens):
+        print 'mutating!'
+        self.cursor_x, self.cursor_y, self.curr_top = x, y, curr_top
+        self.lines = lines
+        self.line_tokens = line_tokens
