@@ -129,7 +129,6 @@ def delete_text_movement(movement, graphics_state, local_state, global_state):
 
 def delete_text_highlight(graphics_state, local_state, global_state):
     if global_state.curr_state == 'Visual':
-        global_state.add_undo_buffer()
         px, py, pt = local_state.get_visual_anchors()
         nx, ny, nt = local_state.get_page_state()
         global_state.add_copy_buffer(text_logic.get_text_range(px, py, pt, nx, ny, nt, local_state))

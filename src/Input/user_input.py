@@ -38,8 +38,8 @@ class user_input():
         self.undo_index += 1
 
     def get_undo_state(self):
-        self.undo_index -= 1
         if self.undo_buffer >= 0:
+            self.undo_index -= 1
             return self.undo_buffer[self.undo_index]
         else:
             return None
