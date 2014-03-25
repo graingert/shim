@@ -44,7 +44,8 @@ class instance():
 
     def replay_line_removal(self, diff):
         for i in range(len(diff[2]['lines'])):
-            self.add_line(i + diff[1], diff[2]['lines'][i])
+            self.lines.insert(i + diff[1], diff[2]['lines'][i])
+            self.line_tokens.insert(i + diff[1], self.parser.parse_string(diff[2]['lines'][i]))
 
     def replay_undo_buffer(self):
         if len(self.undo_buffer):
