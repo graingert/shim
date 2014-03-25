@@ -172,6 +172,7 @@ class user_input():
         if key == 'Return':
             self.command_buffer = ''
             self.curr_state = 'Default'
+            interaction_manager.input_command('fuzzy_file_enter', self.graphics, self.get_curr_instance(), self)
         elif key == 'BackSpace':
             self.command_buffer = self.command_buffer[:-1]
             cmd = 's' + self.command_buffer + ':' + 'fuzzy_file_select'

@@ -233,6 +233,12 @@ def calculate_edit_distance(s1, s2):
     return thisrow[len(s2) - 1]
 
 
+def sort_files(s, files):
+    files = [(k, v, calculate_edit_distance(k, s)) for k, v in files]
+    files = sorted(files, key= lambda x: x[2])
+    return files
+
+
 def draw_matching_file_names(graphics_state, local_state, global_state):
     dims = graphics_state.get_dimensions()
     graphics_state.draw_rectangle_absolute(0, 0, dims['screen_width'], graphics_state.get_grid_y(21), '#657b83')
@@ -240,9 +246,7 @@ def draw_matching_file_names(graphics_state, local_state, global_state):
     _, vy, _ = local_state.get_visual_anchors()
     graphics_state.draw_rectangle_absolute(0, graphics_state.get_grid_y(vy - 1), dims['screen_width'], graphics_state.get_grid_y(vy), '#dc322f')
 
-    curr_s = global_state.command_buffer
-    files = [(k, v, calculate_edit_distance(k, global_state.command_buffer)) for k, v in local_state.get_meta_data()['fuzzy_file_select'].items()]
-    files = sorted(files, key= lambda x: x[2])
+    files = sort_files(global_state.command_buffer, local_state.get_meta_data()['fuzzy_file_select'].items())
 
     graphics_state.write_text_grid(0, 0, global_state.command_buffer, color='#002B36')
     # get top 20, chosen arbitrarily
@@ -253,6 +257,20 @@ def draw_matching_file_names(graphics_state, local_state, global_state):
 def fuzzy_file_select(s, graphics_state, local_state, global_state):
     post = [lambda:draw_matching_file_names(graphics_state, local_state, global_state)]
     render_page([], post, graphics_state, local_state, global_state)
+
+
+def fuzzy_file_enter(graphics_state, local_state, global_state):
+    _, vy, _ = local_state.get_visual_anchors()
+    filename = sort_files(global_state.command_buffer, local_state.get_meta_data()['fuzzy_file_select'].items())[vy][0]
+    print 'GGG' * 100
+    print filename
+    print 'GGG' * 100
+
+    global_state.start_instance(filename)
+    global_state.curr_instance += 1
+    global_state.set_GUI_reference(graphics_state)
+
+
 
 # END PLUGIN DEFINED FUNCTIONS HERE
 
@@ -292,6 +310,7 @@ COMMAND_MAP = {
                   'move_cursor_prev_word_front': move_prev_word_front,
                   # BEGIN PLUGIN DEFINED REFERENCES HERE
                   'fuzzy_file_select': fuzzy_file_select,
+                  'fuzzy_file_enter': fuzzy_file_enter
                   # END PLUGIN DEFINED REFERENCES HERE
               }
 
