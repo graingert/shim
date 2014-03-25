@@ -3,7 +3,7 @@ import re, command_list
 def goto_line_num(s):
     ind = s.find('gg')
     if ind == 0:
-        return 'move_cursor_begin_file'
+        return ['move_cursor_begin_file']
     else:
         count = 'n' + s[:ind]
         return [count, 'move_cursor_line_num']
@@ -16,11 +16,11 @@ def seek_char(s):
 
 def repeat_default_movement(s):
     n_arg = re.search('[0-9]*', s).group()
-    return ['r' + n_arg, command_list.DEFAULT_MOVEMENTS[s[len(n_arg):]]]
+    return ['r' + n_arg, command_list.DEFAULT_MOVEMENTS[s[len(n_arg):]][0]]
 
 
 def delete_text_movement(s):
-    return ['s' + command_list.DEFAULT_MOVEMENTS[s[1:]], 'delete_text_movement']
+    return ['s' + command_list.DEFAULT_MOVEMENTS[s[1:]][0], 'delete_text_movement']
 
 
 def delete_curr_line(s):

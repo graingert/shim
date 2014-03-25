@@ -134,19 +134,19 @@ class user_input():
     # this should be the only state that doesn't change no matter the configuration
     def user_key_insert(self, key):
         if not key in ['BackSpace', 'Return']:
-            cmd = 's' + key + ':' + 'insert_text'
+            cmd = ['s' + key, 'insert_text']
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
         # one of the only few scenarios where the command is the same no matter the configuration?
         elif key == 'BackSpace':
-            interaction_manager.input_command('delete_char', self.graphics, self.get_curr_instance(), self)
+            interaction_manager.input_command(['delete_char'], self.graphics, self.get_curr_instance(), self)
         # similar to above
         elif key == 'Return':
-            interaction_manager.input_command('add_new_line', self.graphics, self.get_curr_instance(), self)
+            interaction_manager.input_command(['add_new_line'], self.graphics, self.get_curr_instance(), self)
 
     def user_key_visual(self, key):
         if VISUAL_MOVEMENTS.has_key(key):
             motion = VISUAL_MOVEMENTS[key]
-            cmd = 's' + motion + ':visual_movement'
+            cmd = ['s' + motion[0], 'visual_movement']
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
             self.command_buffer = ''
 

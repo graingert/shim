@@ -19,6 +19,9 @@ def render_default_graphics(graphics_state, local_state, global_state):
             graphics_state.write_line_grid(i, lines[curr_top + i])
         except IndexError:
             break
+    x, y, t = local_state.get_page_state()
+    status_line = 'file: %s  |  mode: %s  |  %d, %d' % (local_state.get_filename(), global_state.curr_state, x, y + t)
+    graphics_state.write_status_line(status_line)
 
 
 def render_page(pre, post, graphics_state, local_state, global_state):
@@ -319,10 +322,6 @@ def input_command(command, graphics_state, local_state, global_state):
 #    commands = command.split(':')
     if len(command) == 1:
         COMMAND_MAP[command[0]](graphics_state, local_state, global_state)
-        # try:
-        #     COMMAND_MAP[command](graphics_state, instance)
-        # except:
-        #     pass
     else:
         input_command_arg(command, graphics_state, local_state, global_state)
 
