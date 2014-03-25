@@ -14,8 +14,7 @@ class user_input():
     def __init__(self):
         self.graphics = None
         self.curr_state, self.command_buffer = 'Default', ''
-        self.instances, self.curr_instance = [], 0
-        self.undo_buffer, self.copy_buffer, self.undo_index = [], [], 0
+        self.instances, self.copy_buffer, self.curr_instance = [], [], 0
 
     def start_instance(self, filename):
         self.instances.append(instance.instance(filename))
@@ -27,21 +26,6 @@ class user_input():
 
     def add_copy_buffer(self, l):
         self.copy_buffer = l
-
-    def add_undo_buffer(self):
-        inst = self.get_curr_instance()
-        x, y, curr_top = inst.get_page_state()
-        lines = deepcopy(inst.get_lines())
-        line_tokens = deepcopy(inst.get_line_tokens())
-        self.undo_buffer.append( { 'x': x, 'y': y, 'curr_top': curr_top, 'lines': lines, 'line_tokens': line_tokens })
-        self.undo_index += 1
-
-    def get_undo_state(self):
-        if self.undo_buffer >= 0:
-            self.undo_index -= 1
-            return self.undo_buffer[self.undo_index]
-        else:
-            return None
 
     def get_curr_instance(self):
         return self.instances[self.curr_instance]

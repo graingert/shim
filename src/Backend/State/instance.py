@@ -12,6 +12,54 @@ class instance():
         self.cursor_x, self.cursor_y, self.curr_top = 0, 0, 0
         self.visual_x, self.visual_y, self.visual_curr_top = 0, 0, 0
         self.meta_data = json.loads(open('.shimdata', 'r').read())
+        self.undo_buffer = []
+
+
+    def add_to_undo_buffer(self, diff):
+        try:
+            last_state = self.undo_buffer[-1]
+        except IndexError:
+            self.undo_buffer.append(diff)
+            return
+        # repeat addtions to the same line
+        if ((diff[0] == '+' and last_state[0] == '+') and diff[1] == last_state[2]['last_addition'] + 1):
+            last_state[2]['count'] += 1
+            last_state[2]['last_addition'] += 1
+        elif ((diff[0] == '-' and last_state[0] == '-') and diff[1] == last_state[1]):
+            last_state[2]['lines'].append(diff[2]['lines'][0])
+        # repeat modifications to the same line
+        elif ((diff[0] == 'm' and last_state[0] == 'm') and diff[1] == last_state[1]):
+            return
+        else:
+            self.undo_buffer.append(diff)
+
+    def replay_line_modification(self, diff):
+        self.lines[diff[1]] = diff[2]['line'][0]
+        self.line_tokens[diff[1]] = diff[2]['line_token'][0]
+
+    def replay_line_addition(self, diff):
+        for i in range(diff[2]['count']):
+            self.lines.pop(diff[1])
+            self.line_tokens.pop(diff[1])
+
+    def replay_line_removal(self, diff):
+        for i in range(len(diff[2]['lines'])):
+            self.add_line(i + diff[1], diff[2]['lines'][i])
+
+    def replay_undo_buffer(self):
+        if len(self.undo_buffer):
+            diff = self.undo_buffer.pop(-1)
+            if diff[0] == 'm':
+                self.replay_line_modification(diff)
+            elif diff[0] == '+':
+                self.replay_line_addition(diff)
+            elif diff[0] == '-':
+                self.replay_line_removal(diff)
+
+            (x, y, z)  = diff[2]['state']
+            self.set_curr_top(z)
+            self.set_cursor(x, y)
+
 
     def get_line(self, index):
         return self.lines[index]
@@ -48,10 +96,12 @@ class instance():
         return self.meta_data
 
     def add_line(self, index, line):
+        self.add_to_undo_buffer(('+', index, { 'count': 1, 'state': self.get_page_state(), 'last_addition': index }))
         self.lines.insert(index, line)
         self.line_tokens.insert(index, self.parser.parse_string(line))
 
     def remove_line(self, index):
+        self.add_to_undo_buffer(('-', index, { 'lines': [self.lines[index]], 'state': self.get_page_state(), }))
         self.lines.pop(index)
         self.line_tokens.pop(index)
 
@@ -62,6 +112,7 @@ class instance():
         self.line_height = num
 
     def set_line(self, ind, s):
+        self.add_to_undo_buffer(('m', ind, { 'line': [self.lines[ind]], 'line_token': [self.line_tokens[ind]], 'state': self.get_page_state()}))
         self.lines[ind] = s
         self.line_tokens[ind] = self.parser.parse_string(s)
 
@@ -80,8 +131,3 @@ class instance():
             self.cursor_y = 0
         else:
             self.cursor_y = y
-
-    def mutate_state(self, x, y, curr_top, lines, line_tokens):
-        self.cursor_x, self.cursor_y, self.curr_top = x, y, curr_top
-        self.lines = lines
-        self.line_tokens = line_tokens

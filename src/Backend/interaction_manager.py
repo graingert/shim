@@ -215,10 +215,8 @@ def write(graphics_state, local_state, global_state):
 
 
 def undo_command(graphics_state, local_state, global_state):
-    prev = global_state.get_undo_state()
-    if prev != None:
-        local_state.mutate_state(prev['x'], prev['y'], prev['curr_top'], prev['lines'], prev['line_tokens'])
-        render_page([], [], graphics_state, local_state, global_state)
+    local_state.replay_undo_buffer()
+    render_page([], [], graphics_state, local_state, global_state)
 
 # BEGIN PLUGIN DEFINED FUNCTIONS HERE
 

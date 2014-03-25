@@ -121,7 +121,7 @@ def delete_text_range(px, py, pt, nx, ny, nt, local_state):
 
 def get_text_range(px, py, pt, nx, ny, nt, local_state):
     txt = []
-    fx, fy = ((px, py), (nx, ny))[(ny + nt) < (py + pt)]
+    fx, fy = ((nx, ny), (px, py))[(ny + nt) < (py + pt)]
 
     if py + pt == ny + nt:
         start, end = ((px, nx), (nx, px))[nx < px]
