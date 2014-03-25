@@ -6,41 +6,41 @@ def goto_line_num(s):
         return 'move_cursor_begin_file'
     else:
         count = 'n' + s[:ind]
-        return ':'.join([count, 'move_cursor_line_num'])
+        return [count, 'move_cursor_line_num']
 
 
 def seek_char(s):
     # assumption is that the regex will only return a string of length 2, seems kind of reasonable
-    return ':'.join(['c' + s[1], 'move_cursor_seek_char'])
+    return ['c' + s[1], 'move_cursor_seek_char']
 
 
 def repeat_default_movement(s):
     n_arg = re.search('[0-9]*', s).group()
-    return ':'.join(['r' + n_arg, command_list.DEFAULT_MOVEMENTS[s[len(n_arg):]]])
+    return ['r' + n_arg, command_list.DEFAULT_MOVEMENTS[s[len(n_arg):]]]
 
 
 def delete_text_movement(s):
-    return ':'.join(['s' + command_list.DEFAULT_MOVEMENTS[s[1:]], 'delete_text_movement'])
+    return ['s' + command_list.DEFAULT_MOVEMENTS[s[1:]], 'delete_text_movement']
 
 
 def delete_curr_line(s):
     n_arg = re.search('[0-9]*', s).group()
     if bool(n_arg):
-        return ':'.join(['r' + n_arg, 'delete_curr_line'])
+        return ['r' + n_arg, 'delete_curr_line']
     else:
-        return 'delete_curr_line'
+        return ['delete_curr_line']
 
 
 def yank_curr_line(s):
-    return 'yank_curr_line'
+    return ['yank_curr_line']
 
 
 def quit(s):
-    return 'quit'
+    return ['quit']
 
 
 def write(s):
-    return 'write'
+    return ['write']
 
 
 DEFAULT_COMMAND_MAP = {

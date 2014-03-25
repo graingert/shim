@@ -66,19 +66,12 @@ class user_input():
             else:
                 self.user_key_pressed(key)
 
-    def control_f(self, event):
-        # drop on floor for now
-        a = 1
-
-    def control_b(self, event):
-        # drop on floor for now
-        a = 1
     def control_p(self, event):
         if self.curr_state != 'fuzzy_file_selection':
             self.curr_state = 'fuzzy_file_selection'
             self.command_buffer = ''
             self.get_curr_instance().set_visual_anchor(y=2)
-            cmd = 's' + self.command_buffer + ':' + 'fuzzy_file_select'
+            cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
 
     def escape(self, event):
@@ -92,7 +85,7 @@ class user_input():
         delta = event.delta * -1
         self.curr_state = 'Default'
         self.command_buffer = ''
-        cmd = 'n' + str(delta) + ':mouse_scroll'
+        cmd = ['n' + str(delta), 'mouse_scroll']
         interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), None)
 
     def user_key_pressed(self, key):
@@ -172,20 +165,19 @@ class user_input():
         if key == 'Return':
             self.command_buffer = ''
             self.curr_state = 'Default'
-            interaction_manager.input_command('fuzzy_file_enter', self.graphics, self.get_curr_instance(), self)
+            cmd = ['fuzzy_file_enter']
         elif key == 'BackSpace':
             self.command_buffer = self.command_buffer[:-1]
-            cmd = 's' + self.command_buffer + ':' + 'fuzzy_file_select'
-            interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
+            cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
         elif key == '<Up>' or key == '<Down>':
             inst = self.get_curr_instance()
             _, vy, _ = inst.get_visual_anchors()
             vy = vy + 1 if key == '<Down>' else vy - 1
             vy = min(21, max(vy, 2))
             inst.set_visual_anchor(y=vy)
-            cmd = 's' + self.command_buffer + ':' + 'fuzzy_file_select'
-            interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
+            cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
         else:
             self.command_buffer += key
-            cmd = 's' + self.command_buffer + ':' + 'fuzzy_file_select'
-            interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
+            cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
+
+        interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)

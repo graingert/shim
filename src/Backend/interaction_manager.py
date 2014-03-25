@@ -316,15 +316,15 @@ COMMAND_MAP = {
 
 
 def input_command(command, graphics_state, local_state, global_state):
-    commands = command.split(':')
-    if len(commands) == 1:
-        COMMAND_MAP[command](graphics_state, local_state, global_state)
+#    commands = command.split(':')
+    if len(command) == 1:
+        COMMAND_MAP[command[0]](graphics_state, local_state, global_state)
         # try:
         #     COMMAND_MAP[command](graphics_state, instance)
         # except:
         #     pass
     else:
-        input_command_arg(commands, graphics_state, local_state, global_state)
+        input_command_arg(command, graphics_state, local_state, global_state)
 
 
 # c denotes character arguments i.e fa maps to find a

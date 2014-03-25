@@ -51,8 +51,6 @@ class text_canvas(Frame):
         self.canvas.bind('<Key>', input_handler.key)
         self.canvas.bind_all('<Escape>', input_handler.escape)
         self.canvas.bind_all("<MouseWheel>", input_handler.mouse_scroll)
-        self.canvas.bind_all('<Control-f>', input_handler.control_f)
-        self.canvas.bind_all('<Control-b>', input_handler.control_b)
         self.canvas.bind_all('<Control-p>', input_handler.control_p)
 
     def write_line_grid(self, y, line):
