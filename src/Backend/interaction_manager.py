@@ -12,7 +12,6 @@ def render_default_graphics(graphics_state, local_state, global_state):
     graphics_state.draw_cursor(x, y)
     # top is zero indexed and line numbers are one indexed
     graphics_state.draw_line_numbers(curr_top + 1)
-
     for i in range(buff_line_count + 1):
         # Might have index errors. catch them and move on with life for now
         try:
@@ -220,7 +219,6 @@ def undo_command(graphics_state, local_state, global_state):
 
 
 def redo_command(graphics_state, local_state, global_state):
-    print '1'
     local_state.redo_state()
     render_page([], [], graphics_state, local_state, global_state)
 

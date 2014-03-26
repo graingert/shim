@@ -14,6 +14,14 @@ class instance():
         self.meta_data = json.loads(open('.shimdata', 'r').read())
         self.undo_buffer, self.undo_index = [], -1
 
+    def check_repeat_additions(self, diff, last_state):
+        return ((diff[0] == '+' and last_state[0] == '+') and diff[1] == last_state[2]['last_addition'] + 1)
+
+    def check_repeat_deletions(self, diff, last_state):
+        return ((diff[0] == '-' and last_state[0] == '-') and diff[1] == last_state[1])
+
+    def check_repeat_modifications(self, diff, last_state):
+        return ((diff[0] == 'm' and last_state[0] == 'm') and diff[1] == last_state[1])
 
     def add_to_undo_buffer(self, diff):
         if self.undo_index == len(self.undo_buffer) - 1:
@@ -25,23 +33,24 @@ class instance():
                 return
 
             # repeat addtions to the same line
-            if ((diff[0] == '+' and last_state[0] == '+') and diff[1] == last_state[2]['last_addition'] + 1):
+            if self.check_repeat_additions(diff, last_state):
                 last_state[2]['count'] += 1
                 last_state[2]['last_addition'] += 1
             # repeat deletions from the same line
-            elif ((diff[0] == '-' and last_state[0] == '-') and diff[1] == last_state[1]):
+            elif self.check_repeat_deletions(diff, last_state):
                 last_state[2]['lines'].append(diff[2]['lines'][0])
                 last_state[2]['line_tokens'].append(diff[2]['line_tokens'][0])
             # repeat modifications to the same line
-            elif ((diff[0] == 'm' and last_state[0] == 'm') and diff[1] == last_state[1]):
-                last_state[2]['new']['line'] = diff[2]['new']['line'][0]
-                last_state[2]['new']['line_token'] = diff[2]['new']['line_token'][0]
+            elif self.check_repeat_modifications(diff, last_state):
+                last_state[2]['new']['line'] = diff[2]['new']['line']
+                last_state[2]['new']['line_token'] = diff[2]['new']['line_token']
             else:
                 self.undo_buffer.append(diff)
                 self.undo_index += 1
+                if len(self.undo_buffer) > 100:
+                    self.undo_buffer.pop(0)
         else:
-            self.undo_buffer = (self.undo_buffer[:self.undo_index], [])[self.undo_index == -1]
-            self.undo_buffer.append(diff)
+            self.undo_buffer = (self.undo_buffer[:self.undo_index] + [diff], [diff])[self.undo_index == -1]
             self.undo_index += 1
 
 
