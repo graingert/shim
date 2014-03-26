@@ -215,7 +215,13 @@ def write(graphics_state, local_state, global_state):
 
 
 def undo_command(graphics_state, local_state, global_state):
-    local_state.replay_undo_buffer()
+    local_state.undo_state()
+    render_page([], [], graphics_state, local_state, global_state)
+
+
+def redo_command(graphics_state, local_state, global_state):
+    print '1'
+    local_state.redo_state()
     render_page([], [], graphics_state, local_state, global_state)
 
 # BEGIN PLUGIN DEFINED FUNCTIONS HERE
@@ -283,6 +289,7 @@ COMMAND_MAP = {
                   'insert_text': insert_text,
                   'delete_char': delete_char,
                   'undo_command': undo_command,
+                  'redo_command': redo_command,
                   'mouse_scroll': mouse_scroll,
                   'add_new_line': add_new_line,
                   'move_cursor_left': move_left,
@@ -311,7 +318,7 @@ COMMAND_MAP = {
                   'move_cursor_prev_word_front': move_prev_word_front,
                   # BEGIN PLUGIN DEFINED REFERENCES HERE
                   'fuzzy_file_select': fuzzy_file_select,
-                  'fuzzy_file_enter': fuzzy_file_enter
+                  'fuzzy_file_enter': fuzzy_file_enter,
                   # END PLUGIN DEFINED REFERENCES HERE
               }
 

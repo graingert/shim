@@ -50,13 +50,14 @@ DEFAULT_MOVEMENTS = {
                         'O': ['insert_new_line_above'],
                         'o': ['insert_new_line_below'],
                         'x': ['delete_text_highlight'],
+                        '<Control-r>': ['redo_command'],
                         'gg': ['move_cursor_begin_file'],
                         'e': ['move_cursor_next_word_end'],
                         '}': ['move_cursor_next_paragraph'],
                         '{': ['move_cursor_prev_paragraph'],
                         '0': ['move_cursor_beginning_line'],
                         'w': ['move_cursor_next_word_front'],
-                        'b': ['move_cursor_prev_word_front']
+                        'b': ['move_cursor_prev_word_front'],
                     }
 
 VISUAL_MOVEMENTS = {

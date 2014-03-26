@@ -58,6 +58,9 @@ class user_input():
             cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
 
+    def control_r(self, event):
+        self.user_key_pressed('<Control-r>')
+
     def escape(self, event):
         self.curr_state = 'Default'
         self.command_buffer = ''

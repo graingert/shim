@@ -12,55 +12,93 @@ class instance():
         self.cursor_x, self.cursor_y, self.curr_top = 0, 0, 0
         self.visual_x, self.visual_y, self.visual_curr_top = 0, 0, 0
         self.meta_data = json.loads(open('.shimdata', 'r').read())
-        self.undo_buffer = []
+        self.undo_buffer, self.undo_index = [], -1
 
 
     def add_to_undo_buffer(self, diff):
-        try:
-            last_state = self.undo_buffer[-1]
-        except IndexError:
-            self.undo_buffer.append(diff)
-            return
-        # repeat addtions to the same line
-        if ((diff[0] == '+' and last_state[0] == '+') and diff[1] == last_state[2]['last_addition'] + 1):
-            last_state[2]['count'] += 1
-            last_state[2]['last_addition'] += 1
-        elif ((diff[0] == '-' and last_state[0] == '-') and diff[1] == last_state[1]):
-            last_state[2]['lines'].append(diff[2]['lines'][0])
-        # repeat modifications to the same line
-        elif ((diff[0] == 'm' and last_state[0] == 'm') and diff[1] == last_state[1]):
-            return
+        if self.undo_index == len(self.undo_buffer) - 1:
+            try:
+                last_state = self.undo_buffer[self.undo_index]
+            except IndexError:
+                self.undo_buffer.append(diff)
+                self.undo_index += 1
+                return
+
+            # repeat addtions to the same line
+            if ((diff[0] == '+' and last_state[0] == '+') and diff[1] == last_state[2]['last_addition'] + 1):
+                last_state[2]['count'] += 1
+                last_state[2]['last_addition'] += 1
+            # repeat deletions from the same line
+            elif ((diff[0] == '-' and last_state[0] == '-') and diff[1] == last_state[1]):
+                last_state[2]['lines'].append(diff[2]['lines'][0])
+                last_state[2]['line_tokens'].append(diff[2]['line_tokens'][0])
+            # repeat modifications to the same line
+            elif ((diff[0] == 'm' and last_state[0] == 'm') and diff[1] == last_state[1]):
+                last_state[2]['new']['line'] = diff[2]['new']['line'][0]
+                last_state[2]['new']['line_token'] = diff[2]['new']['line_token'][0]
+            else:
+                self.undo_buffer.append(diff)
+                self.undo_index += 1
         else:
+            self.undo_buffer = (self.undo_buffer[:self.undo_index], [])[self.undo_index == -1]
             self.undo_buffer.append(diff)
+            self.undo_index += 1
 
-    def replay_line_modification(self, diff):
-        self.lines[diff[1]] = diff[2]['line'][0]
-        self.line_tokens[diff[1]] = diff[2]['line_token'][0]
 
-    def replay_line_addition(self, diff):
+    def undo_line_modification(self, diff):
+        self.lines[diff[1]] = diff[2]['old']['line'][0]
+        self.line_tokens[diff[1]] = diff[2]['old']['line_token'][0]
+
+    def undo_line_addition(self, diff):
         for i in range(diff[2]['count']):
             self.lines.pop(diff[1])
             self.line_tokens.pop(diff[1])
 
-    def replay_line_removal(self, diff):
+    def undo_line_removal(self, diff):
         for i in range(len(diff[2]['lines'])):
             self.lines.insert(i + diff[1], diff[2]['lines'][i])
-            self.line_tokens.insert(i + diff[1], self.parser.parse_string(diff[2]['lines'][i]))
+            self.line_tokens.insert(i + diff[1], diff[2]['line_tokens'][i])
 
-    def replay_undo_buffer(self):
-        if len(self.undo_buffer):
-            diff = self.undo_buffer.pop(-1)
+    def undo_state(self):
+        if self.undo_index != -1:
+            # diff = self.undo_buffer.pop(-1)
+            diff = self.undo_buffer[self.undo_index]
+            self.undo_index -= 1
             if diff[0] == 'm':
-                self.replay_line_modification(diff)
+                self.undo_line_modification(diff)
             elif diff[0] == '+':
-                self.replay_line_addition(diff)
+                self.undo_line_addition(diff)
             elif diff[0] == '-':
-                self.replay_line_removal(diff)
+                self.undo_line_removal(diff)
 
             (x, y, z)  = diff[2]['state']
             self.set_curr_top(z)
             self.set_cursor(x, y)
 
+    def redo_line_modification(self, diff):
+        self.lines[diff[1]] = diff[2]['new']['line'][0]
+        self.line_tokens[diff[1]] = diff[2]['new']['line_token'][0]
+
+    def redo_line_addition(self, diff):
+        for i in range(diff[2]['count']):
+            self.lines.insert(diff[1] + i, diff[2]['data']['lines'][i])
+            self.line_tokens.insert(diff[1] + i, diff[2]['data']['line_tokens'][i])
+
+    def redo_line_removal(self, diff):
+        for i in range(len(diff[2]['lines'])):
+            self.lines.pop(diff[1])
+            self.line_tokens.pop(diff[1])
+
+    def redo_state(self):
+        if self.undo_index < len(self.undo_buffer) - 1:
+            self.undo_index += 1
+            diff = self.undo_buffer[self.undo_index]
+            if diff[0] == 'm':
+                self.redo_line_modification(diff)
+            if diff[0] == '+':
+                self.redo_line_addition(diff)
+            if diff[0] == '-':
+                self.redo_line_removal(diff)
 
     def get_line(self, index):
         return self.lines[index]
@@ -97,12 +135,14 @@ class instance():
         return self.meta_data
 
     def add_line(self, index, line):
-        self.add_to_undo_buffer(('+', index, { 'count': 1, 'state': self.get_page_state(), 'last_addition': index }))
+        self.add_to_undo_buffer(('+', index,
+            { 'count': 1, 'data': { 'lines': [self.lines[index]], 'line_tokens': [self.line_tokens[index]] },
+            'state': self.get_page_state(), 'last_addition': index }))
         self.lines.insert(index, line)
         self.line_tokens.insert(index, self.parser.parse_string(line))
 
     def remove_line(self, index):
-        self.add_to_undo_buffer(('-', index, { 'lines': [self.lines[index]], 'state': self.get_page_state(), }))
+        self.add_to_undo_buffer(('-', index, { 'lines': [self.lines[index]], 'line_tokens': [self.line_tokens[index]], 'state': self.get_page_state(), }))
         self.lines.pop(index)
         self.line_tokens.pop(index)
 
@@ -113,9 +153,11 @@ class instance():
         self.line_height = num
 
     def set_line(self, ind, s):
-        self.add_to_undo_buffer(('m', ind, { 'line': [self.lines[ind]], 'line_token': [self.line_tokens[ind]], 'state': self.get_page_state()}))
+        parsed = self.parser.parse_string(s)
+        self.add_to_undo_buffer(('m', ind, { 'old': { 'line': [self.lines[ind]], 'line_token': [self.line_tokens[ind]] },
+            'new': { 'line': [s], 'line_token': [parsed] }, 'state': self.get_page_state()}))
         self.lines[ind] = s
-        self.line_tokens[ind] = self.parser.parse_string(s)
+        self.line_tokens[ind] = parsed
 
     def set_visual_anchor(self, x=None, y=None, curr_top=None):
         self.visual_x = x if x is not None else self.cursor_x
