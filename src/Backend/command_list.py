@@ -33,7 +33,9 @@ COMMAND_MAP = {
                   'Up': '<Up>',
                   'Down': '<Down>',
                   'Left': '<Left>',
-                  'Right': '<Right>'
+                  'Right': '<Right>',
+                  '<Control-braceright>': '<Control-bracketright>',
+                  '<Control-braceleft>': '<Control-bracketleft>',
                }
 
 
@@ -58,6 +60,8 @@ DEFAULT_MOVEMENTS = {
                         '0': ['move_cursor_beginning_line'],
                         'w': ['move_cursor_next_word_front'],
                         'b': ['move_cursor_prev_word_front'],
+                        '<Control-braceright>': ['move_next_instance_buffer'],
+                        '<Control-braceleft>': ['move_prev_instance_buffer'],
                     }
 
 DEFAULT_COMMAND_LEADERS = set(['g', 'f', 'd', 'y'])

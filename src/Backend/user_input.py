@@ -23,7 +23,7 @@ class user_input():
     def set_GUI_reference(self, canvas):
         self.graphics = canvas
         self.instances[self.curr_instance].set_line_height(self.graphics.line_height)
-        interaction_manager.render_page([], [], self.graphics, self.instances[self.curr_instance], self)
+        interaction_manager.render_page([], [], self.graphics, self.get_curr_instance(), self)
 
     def add_copy_buffer(self, l):
         self.copy_buffer = l
@@ -33,6 +33,16 @@ class user_input():
 
     def get_copy_buffer(self):
         return self.copy_buffer
+
+    def go_next_instance(self):
+        if self.curr_instance < len(self.instances) - 1:
+            self.curr_instance += 1
+            self.set_GUI_reference(self.graphics)
+
+    def go_prev_instance(self):
+        if self.curr_instance > 0:
+            self.curr_instance -= 1
+            self.set_GUI_reference(self.graphics)
 
     # checks if key input an integer greater than 0 and less than 10
     def is_digit(self, k):
@@ -58,6 +68,12 @@ class user_input():
             self.get_curr_instance().set_visual_anchor(y=2)
             cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
+
+    def control_braceright(self, event):
+        self.user_key_pressed('<Control-braceright>')
+
+    def control_braceleft(self, event):
+        self.user_key_pressed('<Control-braceleft>')
 
     def control_r(self, event):
         self.user_key_pressed('<Control-r>')

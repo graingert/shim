@@ -222,6 +222,13 @@ def redo_command(graphics_state, local_state, global_state):
     local_state.redo_state()
     render_page([], [], graphics_state, local_state, global_state)
 
+
+def move_next_instance_buffer(graphics_state, local_state, global_state):
+    global_state.go_next_instance()
+
+def move_prev_instance_buffer(graphics_state, local_state, global_state):
+    global_state.go_prev_instance()
+
 # BEGIN PLUGIN DEFINED FUNCTIONS HERE
 
 # yanked from: http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#Python
@@ -314,6 +321,8 @@ COMMAND_MAP = {
                   'move_cursor_beginning_line': move_beginning_line,
                   'move_cursor_next_word_front': move_next_word_front,
                   'move_cursor_prev_word_front': move_prev_word_front,
+                  'move_next_instance_buffer': move_next_instance_buffer,
+                  'move_prev_instance_buffer': move_prev_instance_buffer,
                   # BEGIN PLUGIN DEFINED REFERENCES HERE
                   'fuzzy_file_select': fuzzy_file_select,
                   'fuzzy_file_enter': fuzzy_file_enter,
