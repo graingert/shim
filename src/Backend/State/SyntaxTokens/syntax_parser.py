@@ -7,11 +7,17 @@ from color_config import options
 class syntax_parser():
     # init by getting a lexer for file name
     def __init__(self, filename):
-        self.lexer = get_lexer_for_filename(filename)
+        try:
+            self.lexer = get_lexer_for_filename(filename)
+        except:
+            self.lexer = None
 
     def parse_string(self, s):
         start = 0
         ret_list = []
+        # TODO: MAKE THIS NOT SILLY
+        if self.lexer == None:
+            return ([(0, s, options['text_color'])])
         for token in lex(s, self.lexer):
             color = self.determine_color(token[0])
             ret_list.append((start, token[1], color))

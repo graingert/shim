@@ -273,15 +273,11 @@ def fuzzy_file_select(s, graphics_state, local_state, global_state):
 
 def fuzzy_file_enter(graphics_state, local_state, global_state):
     _, vy, _ = local_state.get_visual_anchors()
-    filename = sort_files(global_state.command_buffer, local_state.get_meta_data()['fuzzy_file_select'].items())[vy][0]
-    print 'GGG' * 100
-    print filename
-    print 'GGG' * 100
+    filename = sort_files(global_state.command_buffer, local_state.get_meta_data()['fuzzy_file_select'].items())[vy - 2][0]
 
     global_state.start_instance(filename)
     global_state.curr_instance += 1
     global_state.set_GUI_reference(graphics_state)
-
 
 
 # END PLUGIN DEFINED FUNCTIONS HERE
