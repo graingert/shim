@@ -53,7 +53,6 @@ class instance():
             self.undo_buffer = (self.undo_buffer[:self.undo_index] + [diff], [diff])[self.undo_index == -1]
             self.undo_index += 1
 
-
     def undo_line_modification(self, diff):
         self.lines[diff[1]] = diff[2]['old']['line'][0]
         self.line_tokens[diff[1]] = diff[2]['old']['line_token'][0]
@@ -145,13 +144,26 @@ class instance():
 
     def add_line(self, index, line):
         self.add_to_undo_buffer(('+', index,
-            { 'count': 1, 'data': { 'lines': [self.lines[index]], 'line_tokens': [self.line_tokens[index]] },
-            'state': self.get_page_state(), 'last_addition': index }))
+            {
+                'count': 1,
+                'data': {
+                            'lines': [self.lines[index]],
+                            'line_tokens': [self.line_tokens[index]] 
+                        },
+                'state': self.get_page_state(),
+                'last_addition': index 
+            }))
         self.lines.insert(index, line)
         self.line_tokens.insert(index, self.parser.parse_string(line))
 
     def remove_line(self, index):
-        self.add_to_undo_buffer(('-', index, { 'lines': [self.lines[index]], 'line_tokens': [self.line_tokens[index]], 'state': self.get_page_state(), }))
+        self.add_to_undo_buffer(('-', index,
+            {
+                'lines': [self.lines[index]],
+                'line_tokens': [self.line_tokens[index]],
+                'state': self.get_page_state(),
+            }
+        ))
         self.lines.pop(index)
         self.line_tokens.pop(index)
 
@@ -163,8 +175,18 @@ class instance():
 
     def set_line(self, ind, s):
         parsed = self.parser.parse_string(s)
-        self.add_to_undo_buffer(('m', ind, { 'old': { 'line': [self.lines[ind]], 'line_token': [self.line_tokens[ind]] },
-            'new': { 'line': [s], 'line_token': [parsed] }, 'state': self.get_page_state()}))
+        self.add_to_undo_buffer(('m', ind,
+            {
+                'old': {
+                    'line': [self.lines[ind]],
+                    'line_token': [self.line_tokens[ind]] 
+                 },
+                'new': {
+                    'line': [s], 'line_token': [parsed] 
+                },
+                'state': self.get_page_state()
+            }
+        ))
         self.lines[ind] = s
         self.line_tokens[ind] = parsed
 

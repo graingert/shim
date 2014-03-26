@@ -60,6 +60,8 @@ DEFAULT_MOVEMENTS = {
                         'b': ['move_cursor_prev_word_front'],
                     }
 
+DEFAULT_COMMAND_LEADERS = set(['g', 'f', 'd', 'y'])
+
 VISUAL_MOVEMENTS = {
                         'k': ['move_cursor_up'],
                         'h': ['move_cursor_left'],

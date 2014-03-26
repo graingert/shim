@@ -4,6 +4,7 @@ from State import instance
 import re
 
 DEFAULT_MOVEMENTS = command_list.DEFAULT_MOVEMENTS
+DEFAULT_COMMAND_LEADERS = command_list.DEFAULT_COMMAND_LEADERS
 VISUAL_MOVEMENTS = command_list.VISUAL_MOVEMENTS
 BREAK_MOVEMENTS = command_list.BREAK_MOVEMENTS
 COMMAND_MAP = command_list.COMMAND_MAP
@@ -38,9 +39,9 @@ class user_input():
         return (len(k) == 1) and (ord(k) >= 49 and ord(k) <= 57)
 
     def key(self, event):
-        # if key is not in [a-zA-Z0-9] length of keysym will be greater than one
         key = event.keysym
         if key != '??':
+            # if key is not in [a-zA-Z0-9] length of keysym will be greater than one
             if len(key) > 1:
                 try:
                     k = COMMAND_MAP[key]
@@ -87,36 +88,37 @@ class user_input():
         elif self.curr_state == 'fuzzy_file_selection':
             self.user_key_fuzzy_file_select(key)
 
+    def init_insert_mode(self):
+        self.curr_state = 'Insert'
 
-    # TODO: CLEAN UP THIS MESS
+    def init_ex_mode(self):
+        self.curr_state = 'Ex'
+
+    def init_visual_mode(self):
+        curr_instance = self.get_curr_instance()
+        # set once and then never mutate this ever again per visual selection
+        self.get_curr_instance().set_visual_anchor()
+        self.curr_state = 'Visual'
+
     def user_key_default(self, key):
-        # To be buffered
-        if key in ['g', 'f', 'd', 'y'] or self.is_digit(key) or len(self.command_buffer):
+        mode_dict = { 'i': self.init_insert_mode, 'v': self.init_visual_mode, ':': self.init_ex_mode }
+        # Command to be buffered
+        if key in DEFAULT_COMMAND_LEADERS or self.is_digit(key) or len(self.command_buffer):
             self.command_buffer += key
             s_par = command_parser.default_parse(self.command_buffer)
 
-            if s_par != '':
-                interaction_manager.input_command(s_par, self.graphics, self.get_curr_instance(), self)
-                self.command_buffer = ''
-            elif BREAK_MOVEMENTS.has_key(key):
-                interaction_manager.input_command(BREAK_MOVEMENTS[key], self.graphics, self.get_curr_instance(), self)
+            if s_par != '' or key in BREAK_MOVEMENTS:
+                cmd = s_par if s_par != '' else BREAK_MOVEMENTS[key]
+                interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
                 self.command_buffer = ''
 
         # default movement requested
-        elif DEFAULT_MOVEMENTS.has_key(key):
+        elif key in DEFAULT_MOVEMENTS:
             interaction_manager.input_command(DEFAULT_MOVEMENTS[key], self.graphics, self.get_curr_instance(), self)
             self.command_buffer = ''
-
-        # this could be a dict, or it could be a bunch of if elses. If elses are slightly more intuitive than the other.
-        elif key == 'i':
-            self.curr_state = 'Insert'
-        elif key == 'v':
-            curr_instance = self.get_curr_instance()
-            # set once and then never mutate this ever again per visual selection
-            self.get_curr_instance().set_visual_anchor()
-            self.curr_state = 'Visual'
-        elif key == ':':
-            self.curr_state = 'Ex'
+        # mode change requested
+        elif key in mode_dict:
+            mode_dict[key]()
 
     # this should be the only state that doesn't change no matter the configuration
     def user_key_insert(self, key):
@@ -131,7 +133,7 @@ class user_input():
             interaction_manager.input_command(['add_new_line'], self.graphics, self.get_curr_instance(), self)
 
     def user_key_visual(self, key):
-        if VISUAL_MOVEMENTS.has_key(key):
+        if key in VISUAL_MOVEMENTS:
             motion = VISUAL_MOVEMENTS[key]
             cmd = ['s' + motion[0], 'visual_movement']
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
