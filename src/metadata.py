@@ -14,5 +14,3 @@ def create_metadata_files():
 
         with open(os.path.join(dirname, '.shimdata'), 'w') as f:
             f.write(json.dumps(file_data))
-
-create_metadata_files()

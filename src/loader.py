@@ -110,15 +110,9 @@ def fill_user_input(dir_name, package_name):
     with open('Backend/user_input.py', 'w') as f:
         f.write(''.join(lines))
 
-if __name__ == '__main__':
-    opt_init()
-    (options, args) = parser.parse_args()
 
-    if not options.dir_name:
-        print 'ERROR: did not specify directory to load from'
-        sys.exit(1)
-
-    package_name = load_content_data(options.dir_name)
-    fill_metadata_loader(options.dir_name, package_name)
-    fill_interaction_manager(options.dir_name, package_name)
-    fill_user_input(options.dir_name, package_name)
+def load_plugin(dir_name):
+    package_name = load_content_data(dir_name)
+    fill_metadata_loader(dir_name, package_name)
+    fill_interaction_manager(dir_name, package_name)
+    fill_user_input(dir_name, package_name)
