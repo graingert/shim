@@ -20,7 +20,7 @@ def run_text_editor(filename):
     input_handler = user_input.user_input()
 
     input_handler.start_instance(filename)
-    app = text_canvas.text_canvas(root, 20, input_handler, filename)
+    app = text_canvas.text_canvas(root, 12, input_handler, filename)
 
     root.wm_attributes('-fullscreen', 1)
     root.title('shim')
