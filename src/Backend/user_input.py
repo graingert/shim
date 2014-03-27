@@ -262,4 +262,4 @@ class user_input():
             cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
 
         interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
-    # BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE
+    # END BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE

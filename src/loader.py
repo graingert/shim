@@ -88,6 +88,28 @@ def fill_interaction_manager(dir_name, package_name):
     with open('Backend/interaction_manager.py', 'w') as f:
         f.write(''.join(lines))
 
+
+def fill_user_input(dir_name, package_name):
+    lines = [line for line in open('Backend/user_input.py', 'r')]
+    start_dlist = set(['    # END BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE\n', '        # END MODE CHANGE MAPPINGS HERE\n'])
+    end_dlist = set(['    # BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE\n', '        # BEGIN MODE CHANGE MAPPINGS HERE\n'])
+
+    remove_plugin_code(lines, start_dlist, end_dlist)
+
+    dictstr =  "        mode_dict = { 'i': self.init_insert_mode, 'v': self.init_visual_mode, ':': self.init_ex_mode, %s }\n" % \
+        (open(os.path.join(dir_name, 'user_input_routes.py')).read().strip())
+    add_map = {
+        '    # END BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE\n': open(os.path.join(dir_name, 'user_input.py'), 'r').read(),
+        '        # END MODE CHANGE MAPPINGS HERE\n': dictstr
+    }
+
+    stop_list = set(['    # BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE\n', '        # BEGIN MODE CHANGE MAPPINGS HERE\n'])
+
+    add_plugin_code(lines, add_map, stop_list)
+
+    with open('Backend/user_input.py', 'w') as f:
+        f.write(''.join(lines))
+
 if __name__ == '__main__':
     opt_init()
     (options, args) = parser.parse_args()
@@ -99,3 +121,4 @@ if __name__ == '__main__':
     package_name = load_content_data(options.dir_name)
     fill_metadata_loader(options.dir_name, package_name)
     fill_interaction_manager(options.dir_name, package_name)
+    fill_user_input(options.dir_name, package_name)
