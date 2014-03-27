@@ -107,13 +107,7 @@ class user_input():
         self.user_key_pressed('<Control-o>')
 
     def control_p(self, event):
-        if self.curr_state != 'fuzzy_file_selection':
-            self.curr_state = 'fuzzy_file_selection'
-            self.command_buffer = ''
-            self.get_curr_instance().set_visual_anchor(y=2)
-            cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
-            interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
-
+        self.user_key_pressed('<Control-p>')
     def control_q(self, event):
         self.user_key_pressed('<Control-q>')
 
@@ -189,7 +183,9 @@ class user_input():
         self.curr_state = 'Visual'
 
     def user_key_default(self, key):
-        mode_dict = { 'i': self.init_insert_mode, 'v': self.init_visual_mode, ':': self.init_ex_mode }
+        # BEGIN MODE CHANGE MAPPINGS HERE
+        mode_dict = { 'i': self.init_insert_mode, 'v': self.init_visual_mode, ':': self.init_ex_mode, '<Control-p>': self.init_fuzzy_matching }
+        # END MODE CHANGE MAPPINGS HERE
         # Command to be buffered
         if key in DEFAULT_COMMAND_LEADERS or self.is_digit(key) or len(self.command_buffer):
             self.command_buffer += key
@@ -238,6 +234,14 @@ class user_input():
         else:
             self.command_buffer += key
     # BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE
+    def init_fuzzy_matching(self):
+        if self.curr_state != 'fuzzy_file_selection':
+            self.curr_state = 'fuzzy_file_selection'
+            self.command_buffer = ''
+            self.get_curr_instance().set_visual_anchor(y=2)
+            cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
+            interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
+
     def user_key_fuzzy_file_select(self, key):
         if key == 'Return':
             self.command_buffer = ''
