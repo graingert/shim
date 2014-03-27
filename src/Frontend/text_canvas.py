@@ -5,6 +5,7 @@ import tkFont
 
 # this is hacky as shit but the math doesn't seem to be working out so far
 LINEMAPPING = { 12: 58, 18: 39, 20: 35 }
+#LINEMAPPING[font_size]
 # Main GUI handler class handles graphics to be displayed to user
 class text_canvas(Frame):
     def __init__(self, parent, font_size, input_handler, filename):
@@ -12,7 +13,8 @@ class text_canvas(Frame):
         self.parent = parent
         self.text_font = tkFont.Font(family='Monaco', size=font_size, weight='bold')
         self.filename = filename
-        self.cheight, self.cwidth, self.line_num_spacing, self.line_height = font_size, self.text_font.measure('c'), 50, LINEMAPPING[font_size]
+        self.cheight, self.cwidth, self.line_num_spacing = font_size, self.text_font.measure('c'), 50
+        self.line_height = ((self.winfo_screenheight() - self.cheight)/(self.cheight + 2) - 4)
         self.init_UI(input_handler)
 
     def init_UI(self, input_handler):

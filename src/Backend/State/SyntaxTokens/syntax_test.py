@@ -7,6 +7,7 @@ from color_config import options
 import time
 
 def determine_color(t):
+    print t
     if t is Token.Name.Class or t is Token.Name.Function:
         return options['function_name_color']
     elif t is Token.Keyword:
@@ -21,7 +22,7 @@ def determine_color(t):
         return options['text_color']
 
 
-l = get_lexer_for_filename('test.py')
+l = get_lexer_for_filename('test.c')
 def parse(s, l):
     ret_list = []
     start = 0
@@ -32,18 +33,21 @@ def parse(s, l):
     print ret_list
 
 
-time1 = time.time()
-parse('i', l)
-parse('im', l)
-parse('imp', l)
-parse('impo', l)
-parse('impor', l)
-parse('import', l)
-parse('import test from lol', l)
-parse('def wat(lolblah):', l)
-parse('for line in gg:', l)
-parse('for lin in gg:', l)
-parse('for li in gg:', l)
-parse('for l in gg:', l)
-time2 = time.time()
-print 'function took %0.3f ms' % ((time2-time1)*1000.0)
+# time1 = time.time()
+# parse('i', l)
+# parse('im', l)
+# parse('imp', l)
+# parse('impo', l)
+# parse('impor', l)
+# parse('import', l)
+# parse('import test from lol', l)
+# parse('def wat(lolblah):', l)
+# parse('for line in gg:', l)
+# parse('for lin in gg:', l)
+# parse('for li in gg:', l)
+# parse('for l in gg:', l)
+# time2 = time.time()
+# print 'function took %0.3f ms' % ((time2-time1)*1000.0)
+
+
+parse('static int A_is_a(int cur_c)', l)
