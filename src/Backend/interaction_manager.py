@@ -230,7 +230,6 @@ def move_prev_instance_buffer(graphics_state, local_state, global_state):
     global_state.go_prev_instance()
 
 # BEGIN PLUGIN DEFINED FUNCTIONS HERE
-
 # yanked from: http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#Python
 def calculate_edit_distance(s1, s2):
     oneago = None
@@ -278,8 +277,6 @@ def fuzzy_file_enter(graphics_state, local_state, global_state):
     global_state.start_instance(filename)
     global_state.curr_instance += 1
     global_state.set_GUI_reference(graphics_state)
-
-
 # END PLUGIN DEFINED FUNCTIONS HERE
 
 COMMAND_MAP = {

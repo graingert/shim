@@ -1,27 +1,18 @@
-import os, re, json
-import time
-
-IGNORELIST=['.shimdata']
-
-def get_abpaths():
-    paths = []
-    for dirname, dirnames, filenames in os.walk(os.getcwd()):
-        for filename in filenames:
-            if filename not in IGNORELIST:
-                paths.append(os.path.join(dirname, filename))
-    return paths
-
+import os, json
+# code-generated list of module imports
+from plugins import fuzzy_file_select_meta
+# code-generated list of module imports
 
 def create_metadata_files():
-    paths = get_abpaths()
     for dirname, dirnames, filenames in os.walk(os.getcwd()):
-        table = {}
-        for path in paths:
-            try:
-                table['fuzzy_file_select'][os.path.relpath(path, dirname)] = path
-            except KeyError:
-                table['fuzzy_file_select'] = { os.path.relpath(path, dirname): path }
+        file_data = {}
+        # code-generated list of modules to call write_data
+        MODULES = [fuzzy_file_select_meta]
+        # code-generated list of modules to call write_data
+        for module in MODULES:
+            module.write_data(dirname, file_data)
+
         with open(os.path.join(dirname, '.shimdata'), 'w') as f:
-            f.write(json.dumps(table))
+            f.write(json.dumps(file_data))
 
 create_metadata_files()
