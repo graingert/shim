@@ -45,17 +45,6 @@ class text_canvas(Frame):
     def get_grid_y(self, y):
         return self.cheight * y + (y * 2)
 
-    def bind_events(self, input_handler):
-        # TODO: this should be cleaned up ideally into a separate handler list
-        input_handler.set_GUI_reference(self)
-        self.canvas.bind('<Key>', input_handler.key)
-        self.canvas.bind_all('<Escape>', input_handler.escape)
-        self.canvas.bind_all("<MouseWheel>", input_handler.mouse_scroll)
-        self.canvas.bind_all('<Control-p>', input_handler.control_p)
-        self.canvas.bind_all('<Control-r>', input_handler.control_r)
-        self.canvas.bind_all('<Control-braceright>', input_handler.control_braceright)
-        self.canvas.bind_all('<Control-braceleft>', input_handler.control_braceleft)
-
     def write_line_grid(self, y, line):
         for token in line:
             self.write_text_grid(token[0], y, token[1], token[2])
@@ -93,3 +82,38 @@ class text_canvas(Frame):
 
     def draw_rectangle_absolute(self, x1, y1, x2, y2, color):
         self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline=color)
+
+    def bind_events(self, input_handler):
+        # TODO: this should be cleaned up ideally into a separate handler list
+        input_handler.set_GUI_reference(self)
+        self.canvas.bind('<Key>', input_handler.key)
+        self.canvas.bind_all('<Escape>', input_handler.escape)
+        self.canvas.bind_all('<Control-a>', input_handler.control_a)
+        self.canvas.bind_all('<Control-b>', input_handler.control_b)
+        self.canvas.bind_all('<Control-c>', input_handler.control_c)
+        self.canvas.bind_all('<Control-d>', input_handler.control_d)
+        self.canvas.bind_all('<Control-e>', input_handler.control_e)
+        self.canvas.bind_all('<Control-f>', input_handler.control_f)
+        self.canvas.bind_all('<Control-g>', input_handler.control_g)
+        self.canvas.bind_all('<Control-h>', input_handler.control_h)
+        self.canvas.bind_all('<Control-i>', input_handler.control_i)
+        self.canvas.bind_all('<Control-j>', input_handler.control_j)
+        self.canvas.bind_all('<Control-k>', input_handler.control_k)
+        self.canvas.bind_all('<Control-l>', input_handler.control_l)
+        self.canvas.bind_all('<Control-m>', input_handler.control_m)
+        self.canvas.bind_all('<Control-n>', input_handler.control_n)
+        self.canvas.bind_all('<Control-o>', input_handler.control_o)
+        self.canvas.bind_all('<Control-p>', input_handler.control_p)
+        self.canvas.bind_all('<Control-q>', input_handler.control_q)
+        self.canvas.bind_all('<Control-r>', input_handler.control_r)
+        self.canvas.bind_all('<Control-s>', input_handler.control_s)
+        self.canvas.bind_all('<Control-t>', input_handler.control_t)
+        self.canvas.bind_all('<Control-u>', input_handler.control_u)
+        self.canvas.bind_all('<Control-v>', input_handler.control_v)
+        self.canvas.bind_all('<Control-w>', input_handler.control_w)
+        self.canvas.bind_all('<Control-x>', input_handler.control_x)
+        self.canvas.bind_all('<Control-y>', input_handler.control_y)
+        self.canvas.bind_all('<Control-z>', input_handler.control_z)
+        self.canvas.bind_all("<MouseWheel>", input_handler.mouse_scroll)
+        self.canvas.bind_all('<Control-braceright>', input_handler.control_braceright)
+        self.canvas.bind_all('<Control-braceleft>', input_handler.control_braceleft)

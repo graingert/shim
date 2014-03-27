@@ -61,6 +61,51 @@ class user_input():
             else:
                 self.user_key_pressed(key)
 
+    def control_a(self, event):
+        self.user_key_pressed('<Control-a>')
+
+    def control_b(self, event):
+        self.user_key_pressed('<Control-b>')
+
+    def control_c(self, event):
+        self.user_key_pressed('<Control-c>')
+
+    def control_d(self, event):
+        self.user_key_pressed('<Control-d>')
+
+    def control_e(self, event):
+        self.user_key_pressed('<Control-e>')
+
+    def control_f(self, event):
+        self.user_key_pressed('<Control-f>')
+
+    def control_g(self, event):
+        self.user_key_pressed('<Control-g>')
+
+    def control_h(self, event):
+        self.user_key_pressed('<Control-h>')
+
+    def control_i(self, event):
+        self.user_key_pressed('<Control-i>')
+
+    def control_j(self, event):
+        self.user_key_pressed('<Control-j>')
+
+    def control_k(self, event):
+        self.user_key_pressed('<Control-k>')
+
+    def control_l(self, event):
+        self.user_key_pressed('<Control-l>')
+
+    def control_m(self, event):
+        self.user_key_pressed('<Control-m>')
+
+    def control_n(self, event):
+        self.user_key_pressed('<Control-n>')
+
+    def control_o(self, event):
+        self.user_key_pressed('<Control-o>')
+
     def control_p(self, event):
         if self.curr_state != 'fuzzy_file_selection':
             self.curr_state = 'fuzzy_file_selection'
@@ -69,14 +114,41 @@ class user_input():
             cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
             interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
 
+    def control_q(self, event):
+        self.user_key_pressed('<Control-q>')
+
+    def control_r(self, event):
+        self.user_key_pressed('<Control-r>')
+
+    def control_s(self, event):
+        self.user_key_pressed('<Control-s>')
+
+    def control_t(self, event):
+        self.user_key_pressed('<Control-t>')
+
+    def control_u(self, event):
+        self.user_key_pressed('<Control-u>')
+
+    def control_v(self, event):
+        self.user_key_pressed('<Control-v>')
+
+    def control_w(self, event):
+        self.user_key_pressed('<Control-w>')
+
+    def control_x(self, event):
+        self.user_key_pressed('<Control-x>')
+
+    def control_y(self, event):
+        self.user_key_pressed('<Control-y>')
+
+    def control_z(self, event):
+        self.user_key_pressed('<Control-z>')
+
     def control_braceright(self, event):
         self.user_key_pressed('<Control-braceright>')
 
     def control_braceleft(self, event):
         self.user_key_pressed('<Control-braceleft>')
-
-    def control_r(self, event):
-        self.user_key_pressed('<Control-r>')
 
     def escape(self, event):
         self.curr_state = 'Default'
@@ -165,7 +237,7 @@ class user_input():
             self.command_buffer = self.command_buffer[:-1]
         else:
             self.command_buffer += key
-
+    # BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE
     def user_key_fuzzy_file_select(self, key):
         if key == 'Return':
             self.command_buffer = ''
@@ -186,3 +258,4 @@ class user_input():
             cmd = ['s' + self.command_buffer, 'fuzzy_file_select']
 
         interaction_manager.input_command(cmd, self.graphics, self.get_curr_instance(), self)
+    # BEGIN PLUGIN DEFINED ROUTING FUNCITONS HERE
