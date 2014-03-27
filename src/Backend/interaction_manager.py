@@ -19,7 +19,7 @@ def render_default_graphics(graphics_state, local_state, global_state):
         except IndexError:
             break
     x, y, t = local_state.get_page_state()
-    status_line = 'file: %s  |  mode: %s  |  %d, %d' % (local_state.get_filename(), global_state.curr_state, x, y + t)
+    status_line = 'file: %s  |  mode: %s  |  %d, %d | command buffer: %s' % (local_state.get_filename(), global_state.curr_state, x, y + t, global_state.command_buffer)
     graphics_state.write_status_line(status_line)
 
 
@@ -249,7 +249,7 @@ def sort_files(s, files):
     files = sorted(files, key= lambda x: x[2])
     return files
 
-
+# plugins have access to all state variables in the text editor
 def draw_matching_file_names(graphics_state, local_state, global_state):
     dims = graphics_state.get_dimensions()
     graphics_state.draw_rectangle_absolute(0, 0, dims['screen_width'], graphics_state.get_grid_y(21), '#657b83')
@@ -260,16 +260,16 @@ def draw_matching_file_names(graphics_state, local_state, global_state):
     files = sort_files(global_state.command_buffer, local_state.get_meta_data()['fuzzy_file_select'].items())
 
     graphics_state.write_text_grid(0, 0, global_state.command_buffer, color='#002B36')
-    # get top 20, chosen arbitrarily
+
     for i in range(20):
         graphics_state.write_text_grid(0, i + 1, files[i][0], color='#002B36')
 
-
+# router calls this logic
 def fuzzy_file_select(s, graphics_state, local_state, global_state):
     post = [lambda:draw_matching_file_names(graphics_state, local_state, global_state)]
     render_page([], post, graphics_state, local_state, global_state)
 
-
+# router calls this logic
 def fuzzy_file_enter(graphics_state, local_state, global_state):
     _, vy, _ = local_state.get_visual_anchors()
     filename = sort_files(global_state.command_buffer, local_state.get_meta_data()['fuzzy_file_select'].items())[vy - 2][0]
@@ -324,7 +324,6 @@ COMMAND_MAP = {
 
 
 def input_command(command, graphics_state, local_state, global_state):
-#    commands = command.split(':')
     if len(command) == 1:
         COMMAND_MAP[command[0]](graphics_state, local_state, global_state)
     else:

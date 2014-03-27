@@ -17,6 +17,7 @@ def load_content_data(dir_name):
         if line.startswith('package_name'):
             return line.split(':')[-1].strip()
 
+
 def remove_plugin_code(lines, start_dlist, end_dlist):
     dall = False
     for i in range(len(lines) - 1, -1, -1):
@@ -26,6 +27,7 @@ def remove_plugin_code(lines, start_dlist, end_dlist):
             dall = True
         elif dall:
             lines.pop(i)
+
 
 def add_plugin_code(lines, add_map, stop_list):
     add_s = None
@@ -38,6 +40,8 @@ def add_plugin_code(lines, add_map, stop_list):
             lines.insert(i, add_s)
 
 
+# this is not how it should look like in the end
+# But for demonstration purposes I think it works just fine
 def fill_metadata_loader(dir_name, package_name):
     fn = package_name + '_meta.py'
 
@@ -51,18 +55,37 @@ def fill_metadata_loader(dir_name, package_name):
     end_dlist = set(['# BEGIN code-generated list of module imports\n', '        # BEGIN code-generated list of modules to call write_data\n'])
 
     remove_plugin_code(lines, start_dlist, end_dlist)
-    # this is not how it should look like in the end. But for demonstration purposes I think it works just fine
     ipn = package_name + '_meta'
+
     add_map = {
         '# END code-generated list of module imports\n': 'from plugins import %s\n' %  (ipn),
         '        # END code-generated list of modules to call write_data\n': '        MODULES = [%s]\n' % (ipn),
     }
-
     stop_list = set(['# BEGIN code-generated list of module imports\n', '        # BEGIN code-generated list of modules to call write_data\n'])
 
     add_plugin_code(lines, add_map, stop_list)
 
     with open('metadata.py', 'w') as f:
+        f.write(''.join(lines))
+
+
+def fill_interaction_manager(dir_name, package_name):
+    lines = [line for line in open('Backend/interaction_manager.py', 'r')]
+    start_dlist = set(['# END PLUGIN DEFINED FUNCTIONS HERE\n', '    # END PLUGIN DEFINED REFERENCES HERE\n'])
+    end_dlist = set(['# BEGIN PLUGIN DEFINED FUNCTIONS HERE\n', '    # BEGIN PLUGIN DEFINED REFERENCES HERE\n'])
+
+    remove_plugin_code(lines, start_dlist, end_dlist)
+
+    add_map = {
+        '# END PLUGIN DEFINED FUNCTIONS HERE\n': open(os.path.join(dir_name, 'interaction.py'), 'r').read(),
+        '    # END PLUGIN DEFINED REFERENCES HERE\n': open(os.path.join(dir_name, 'interaction_routes.py'), 'r').read(),
+    }
+
+    stop_list = set(['# BEGIN PLUGIN DEFINED FUNCTIONS HERE\n', '    # BEGIN PLUGIN DEFINED REFERENCES HERE\n'])
+
+    add_plugin_code(lines, add_map, stop_list)
+
+    with open('Backend/interaction_manager.py', 'w') as f:
         f.write(''.join(lines))
 
 if __name__ == '__main__':
@@ -75,3 +98,4 @@ if __name__ == '__main__':
 
     package_name = load_content_data(options.dir_name)
     fill_metadata_loader(options.dir_name, package_name)
+    fill_interaction_manager(options.dir_name, package_name)
