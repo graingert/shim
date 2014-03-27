@@ -10,7 +10,7 @@ def create_metadata_files():
         MODULES = [fuzzy_file_select_meta]
         # code-generated list of modules to call write_data
         for module in MODULES:
-            module.write_data(dirname, file_data)
+            module.write_data(dirname, file_data, os.walk(os.getcwd()))
 
         with open(os.path.join(dirname, '.shimdata'), 'w') as f:
             f.write(json.dumps(file_data))
