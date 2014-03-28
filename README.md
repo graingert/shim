@@ -1,6 +1,9 @@
 ### Shim - A vim inspired text editor
 ![movement gif](https://raw.github.com/swong15/shim/master/src/images/demo.gif)
 
+
+See http://swong15.github.io/shim/ for overview
+
 To install dependencies:
 ```
 pip install pygments
