@@ -1,4 +1,5 @@
 ### Shim - A vim inspired text editor
+![movement gif](https://raw.github.com/swong15/shim/master/src/images/demo.gif)
 
 To install dependencies:
 ```
